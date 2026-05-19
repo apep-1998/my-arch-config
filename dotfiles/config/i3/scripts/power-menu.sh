@@ -4,6 +4,7 @@
 declare -A MENU
 MENU=(
     ["🔒 Lock"]="bash $HOME/.config/i3/scripts/lock.sh"
+    ["🚪 Logout"]="i3-msg exit"
     ["🔌 System Reboot"]="reboot"
     ["⚡ Shutdown"]="shutdown now"
 )
