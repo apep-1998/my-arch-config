@@ -1,7 +1,8 @@
-# Don't track venv/compiled artifacts inside bundled dotfiles
+# Don't track build/runtime artifacts inside bundled dotfiles
 **/.venv/
 **/__pycache__/
 *.pyc
+**/node_modules/
 
 # Editor
 .zed/
