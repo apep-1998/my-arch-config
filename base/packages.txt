@@ -10,7 +10,7 @@ bash-completion
 # version control
 git
 # GitHub CLI — create PRs, manage issues, auth from terminal
-gh
+github-cli
 # simple terminal text editor
 nano
 # powerful terminal text editor
