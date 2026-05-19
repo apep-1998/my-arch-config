@@ -79,10 +79,20 @@ done
 OUT_DIR="$HOME/my-arch-audit"
 mkdir -p "$OUT_DIR"
 
-printf '%s\n' "${installed_official[@]}" > "$OUT_DIR/installed-official.txt"
-printf '%s\n' "${installed_aur[@]}"      > "$OUT_DIR/installed-aur.txt"
-printf '%s\n' "${untracked_official[@]}" > "$OUT_DIR/untracked-official.txt"
-printf '%s\n' "${untracked_aur[@]}"      > "$OUT_DIR/untracked-aur.txt"
+(IFS=$'\n'; echo "${installed_official[*]:-}") > "$OUT_DIR/installed-official.txt"
+(IFS=$'\n'; echo "${installed_aur[*]:-}")      > "$OUT_DIR/installed-aur.txt"
+(IFS=$'\n'; echo "${untracked_official[*]:-}") > "$OUT_DIR/untracked-official.txt"
+(IFS=$'\n'; echo "${untracked_aur[*]:-}")      > "$OUT_DIR/untracked-aur.txt"
+
+# ─── Build list strings for summary ───────────────────────────────────────────
+list_official=""
+for pkg in "${untracked_official[@]:-}"; do
+    [ -n "$pkg" ] && list_official+="- $pkg"$'\n'
+done
+list_aur=""
+for pkg in "${untracked_aur[@]:-}"; do
+    [ -n "$pkg" ] && list_aur+="- $pkg"$'\n'
+done
 
 # ─── Summary for LLM ──────────────────────────────────────────────────────────
 cat > "$OUT_DIR/summary.md" <<EOF
@@ -106,16 +116,16 @@ over time that hasn't been added to the config yet.
 - \`installed-aur.txt\`      — all ${#installed_aur[@]} explicitly installed AUR packages
 
 ## Untracked official packages (${#untracked_official[@]})
-$(printf '- %s\n' "${untracked_official[@]}")
+${list_official:-_(none)_}
 
 ## Untracked AUR packages (${#untracked_aur[@]})
-$(printf '- %s\n' "${untracked_aur[@]}")
+${list_aur:-_(none)_}
 
 ## Task for LLM
 Review the untracked packages above. For each one:
 1. Decide if it belongs in: base/, machines/$MACHINE/, or profiles/$PROFILE/
 2. Add it to the correct packages.txt or aur-packages.txt with a one-line comment
-3. If it's not useful to keep, ignore it
+3. If it is a build dependency or not something you consciously installed, skip it
 
 Current profile config files for reference:
 - base/packages.txt
