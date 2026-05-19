@@ -88,4 +88,13 @@ After install, for the target user:
 
 5. **install.sh structure**: The 8-step order (update → multilib → base pkgs → machine pkgs → AUR → profile pkgs → dotfiles → services) must be preserved. Steps are numbered in the output — keep that numbering accurate if steps are added or removed.
 
-6. **Never use `pacman -S` without `--needed`** — this prevents reinstalling already-installed packages.
+6. **Every package must have a comment above it** describing what it does in one short line. This applies to every `packages.txt` and `aur-packages.txt` file. When adding a new package, always write the comment on the line directly above the package name — no blank line between the comment and the package. Keep it factual and brief, like:
+   ```
+   # fast file search (find alternative)
+   fd
+   # Slack team messaging desktop client
+   slack-desktop
+   ```
+   Never add a package without a comment. Never use vague comments like `# utility` or `# tool`.
+
+7. **Never use `pacman -S` without `--needed`** — this prevents reinstalling already-installed packages.

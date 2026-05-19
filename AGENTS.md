@@ -86,7 +86,14 @@ another-package
 **After every change, update README.md to match.** The README is the human-facing source of truth. If you add a machine, profile, package, or change any behavior, the README must reflect it.
 
 Specific rules:
-- New package → add to the most specific applicable layer; document what it is and why in a comment in the package file
+- New package → add to the most specific applicable layer; **always add a one-line comment directly above the package name** describing what it does — no blank line between comment and package name. Example:
+  ```
+  # fast file search (find alternative)
+  fd
+  # Slack team messaging desktop client
+  slack-desktop
+  ```
+  Never add a package without a comment. Never use vague comments like `# utility` or `# tool`.
 - New machine → full set of files + `select_option` entry in `install.sh` + README table + README section
 - New profile → full set of files + `select_option` entry + `DEFAULT_USER` case + README table + README section
 - Editing `install.sh` step order or count → update the step numbers in the script output AND in README
