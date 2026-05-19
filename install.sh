@@ -74,6 +74,25 @@ install_pkg_file() {
     pacman -S --needed --noconfirm "${pkgs[@]}"
 }
 
+apply_hidden_apps() {
+    local file="$1"
+    local home_dir="$2"
+    local user="$3"
+    [ -f "$file" ] || return 0
+    local apps_dir="$home_dir/.local/share/applications"
+    sudo -u "$user" mkdir -p "$apps_dir"
+    while IFS= read -r line; do
+        [[ "$line" =~ ^\s*# ]] && continue
+        [[ -z "${line// }" ]] && continue
+        local desktop_file="$apps_dir/${line}.desktop"
+        sudo -u "$user" tee "$desktop_file" > /dev/null <<EOF
+[Desktop Entry]
+Hidden=true
+EOF
+        log "  hidden: $line"
+    done < "$file"
+}
+
 install_aur_file() {
     local file="$1"
     local aur_user="$2"
@@ -201,6 +220,12 @@ sudo -u "$USERNAME" mkdir -p "$HOME_DIR/.config/autorandr"
 
 # Set shell to zsh
 chsh -s /bin/zsh "$USERNAME"
+
+# Hide profile-excluded apps from launcher
+if [ -f "$SCRIPT_DIR/profiles/$PROFILE/hidden-apps.txt" ]; then
+    log "Hiding apps for profile: $PROFILE"
+    apply_hidden_apps "$SCRIPT_DIR/profiles/$PROFILE/hidden-apps.txt" "$HOME_DIR" "$USERNAME"
+fi
 
 # Machine-specific post-config
 if [ -f "$SCRIPT_DIR/machines/$MACHINE/setup.sh" ]; then

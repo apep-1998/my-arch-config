@@ -50,6 +50,27 @@ install_pkg_file() {
     pacman -S --needed --noconfirm "${pkgs[@]}"
 }
 
+apply_hidden_apps() {
+    local file="$1"
+    local home_dir="$2"
+    local user="$3"
+    [ -f "$file" ] || return 0
+    local apps_dir="$home_dir/.local/share/applications"
+    mkdir -p "$apps_dir"
+    chown "$user:users" "$apps_dir"
+    while IFS= read -r line; do
+        [[ "$line" =~ ^\s*# ]] && continue
+        [[ -z "${line// }" ]] && continue
+        local desktop_file="$apps_dir/${line}.desktop"
+        tee "$desktop_file" > /dev/null <<EOF
+[Desktop Entry]
+Hidden=true
+EOF
+        chown "$user:users" "$desktop_file"
+        log "  hidden: $line"
+    done < "$file"
+}
+
 install_aur_file() {
     local file="$1"
     local aur_user="$2"
@@ -105,6 +126,11 @@ chown -h "$USERNAME:users" \
     "$HOME_DIR/.zshrc" 2>/dev/null || true
 
 # ─── 3. Install new packages ──────────────────────────────────────────────────
+if [ -f "$SCRIPT_DIR/profiles/$PROFILE/hidden-apps.txt" ]; then
+    log "Hiding apps for profile: $PROFILE"
+    apply_hidden_apps "$SCRIPT_DIR/profiles/$PROFILE/hidden-apps.txt" "$HOME_DIR" "$USERNAME"
+fi
+
 step "3/3  Install new packages (--needed = skips already installed)"
 
 install_pkg_file "$SCRIPT_DIR/base/packages.txt"

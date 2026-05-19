@@ -1,0 +1,9 @@
+# Apps to hide from launcher for the work profile.
+# One .desktop filename per line (without the .desktop extension).
+# Find the right name with: ls /usr/share/applications/
+
+# Hide personal-only apps
+telegramdesktop
+org.telegram.desktop
+steam
+lutris
