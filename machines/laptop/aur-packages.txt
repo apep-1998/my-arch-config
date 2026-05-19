@@ -2,5 +2,3 @@
 
 # intelligent CPU frequency scaling (better battery life than TLP alone)
 auto-cpufreq
-# controls screen brightness via ACPI (works with xbacklight)
-acpilight

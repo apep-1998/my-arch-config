@@ -1,5 +1,9 @@
 # PC-specific packages — AMD GPU + ROCm compute stack
 
+# ── Backlight ─────────────────────────────────────────────────────────────────
+# controls screen brightness via X (desktop — no ACPI needed)
+xorg-xbacklight
+
 # ── AMD GPU ───────────────────────────────────────────────────────────────────
 # 32-bit Vulkan driver for AMD (needed for Steam and Wine)
 lib32-vulkan-radeon
