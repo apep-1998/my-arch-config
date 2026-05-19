@@ -1,0 +1,15 @@
+# Laptop-specific packages (Intel GPU — Raptor Lake / Iris Xe)
+
+# Intel GPU
+mesa
+lib32-mesa
+vulkan-intel
+intel-media-driver
+
+# Power management
+tlp
+tlp-rdw
+powertop
+
+# Backlight
+acpilight

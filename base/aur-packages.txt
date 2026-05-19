@@ -1,0 +1,14 @@
+# AUR packages — installed on every machine
+
+brave-bin
+claude-code
+google-chrome
+oh-my-zsh-git
+rofi-greenclip
+rofi-pass
+zsh-theme-powerlevel10k
+sddm-astronaut-theme
+gemini-cli
+opencode
+bluetui
+wiremix

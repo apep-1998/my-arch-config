@@ -1,0 +1,10 @@
+# Personal profile packages
+
+# AI tools
+gemini-cli
+opencode
+claude-code
+
+# Dev tools
+uv
+go

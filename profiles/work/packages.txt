@@ -1,0 +1,8 @@
+# Work profile packages (everphone)
+
+# Communication
+slack-desktop
+
+# Dev tools
+uv
+go
