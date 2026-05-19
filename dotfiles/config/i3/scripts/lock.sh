@@ -1,14 +1,15 @@
 #!/bin/bash
 IMAGE=$HOME/.config/i3/wallpapers/lock-screen.png
 
-# Force English synchronously BEFORE i3lock starts — no race condition.
-# If this were only a tick, the async Python handler might not run in time.
-setxkbmap -layout us,ir
+# Switch to English-only before locking so i3lock always accepts Latin input.
+# us,ir keeps both layouts registered but the active group may still be Persian;
+# setting only "us" removes that ambiguity entirely.
+setxkbmap us
 
-# Also notify the event manager so it can restore the correct layout on unlock.
 i3-msg -t send_tick "FORCE_US_LAYOUT_START"
 
 i3lock -i "$IMAGE" -t
 
-# Restore the focused window's layout after unlock.
+# Restore full layout (us + ir) after unlock so the normal toggle works again.
+setxkbmap -layout us,ir -option grp:alt_shift_toggle
 i3-msg -t send_tick "FORCE_US_LAYOUT_END"
