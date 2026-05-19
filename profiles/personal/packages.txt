@@ -3,3 +3,5 @@
 # ── Dev tools ─────────────────────────────────────────────────────────────────
 # Go programming language compiler and toolchain
 go
+# Telegram desktop messaging client
+telegram-desktop
