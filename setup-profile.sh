@@ -34,8 +34,8 @@ MACHINE=$(select_option "Machine type:" "pc" "laptop")
 PROFILE=$(select_option "Profile:" "personal" "work")
 
 case "$PROFILE" in
-    personal) DEFAULT_USER="arsham" ;;
-    work)     DEFAULT_USER="everphone" ;;
+    personal) DEFAULT_USER="${SUDO_USER:-${USER:-arsham}}" ;;
+    work)     DEFAULT_USER="${SUDO_USER:-${USER:-everphone}}" ;;
 esac
 
 read -rp "Username [${DEFAULT_USER}]: " USERNAME
