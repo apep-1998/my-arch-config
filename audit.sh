@@ -79,10 +79,12 @@ done
 OUT_DIR="$HOME/my-arch-audit"
 mkdir -p "$OUT_DIR"
 
-(IFS=$'\n'; echo "${installed_official[*]:-}") > "$OUT_DIR/installed-official.txt"
-(IFS=$'\n'; echo "${installed_aur[*]:-}")      > "$OUT_DIR/installed-aur.txt"
-(IFS=$'\n'; echo "${untracked_official[*]:-}") > "$OUT_DIR/untracked-official.txt"
-(IFS=$'\n'; echo "${untracked_aur[*]:-}")      > "$OUT_DIR/untracked-aur.txt"
+TS=$(date '+%Y-%m-%d_%H-%M-%S')
+
+(IFS=$'\n'; echo "${installed_official[*]:-}") > "$OUT_DIR/${TS}_installed-official.txt"
+(IFS=$'\n'; echo "${installed_aur[*]:-}")      > "$OUT_DIR/${TS}_installed-aur.txt"
+(IFS=$'\n'; echo "${untracked_official[*]:-}") > "$OUT_DIR/${TS}_untracked-official.txt"
+(IFS=$'\n'; echo "${untracked_aur[*]:-}")      > "$OUT_DIR/${TS}_untracked-aur.txt"
 
 # ─── Build list strings for summary ───────────────────────────────────────────
 list_official=""
@@ -95,8 +97,8 @@ for pkg in "${untracked_aur[@]:-}"; do
 done
 
 # ─── Summary for LLM ──────────────────────────────────────────────────────────
-cat > "$OUT_DIR/summary.md" <<EOF
-# my-arch-config audit — $(date '+%Y-%m-%d')
+cat > "$OUT_DIR/${TS}_summary.md" <<EOF
+# my-arch-config audit — $TS
 
 ## Machine info
 - Machine : $MACHINE
@@ -110,10 +112,10 @@ in the my-arch-config project. They represent software installed manually
 over time that hasn't been added to the config yet.
 
 ## Files
-- \`untracked-official.txt\` — ${#untracked_official[@]} official packages not in config
-- \`untracked-aur.txt\`      — ${#untracked_aur[@]} AUR packages not in config
-- \`installed-official.txt\` — all ${#installed_official[@]} explicitly installed official packages
-- \`installed-aur.txt\`      — all ${#installed_aur[@]} explicitly installed AUR packages
+- \`${TS}_untracked-official.txt\` — ${#untracked_official[@]} official packages not in config
+- \`${TS}_untracked-aur.txt\`      — ${#untracked_aur[@]} AUR packages not in config
+- \`${TS}_installed-official.txt\` — all ${#installed_official[@]} explicitly installed official packages
+- \`${TS}_installed-aur.txt\`      — all ${#installed_aur[@]} explicitly installed AUR packages
 
 ## Untracked official packages (${#untracked_official[@]})
 ${list_official:-_(none)_}
@@ -146,9 +148,9 @@ info "  Untracked official : ${#untracked_official[@]}"
 info "  Untracked AUR      : ${#untracked_aur[@]}"
 echo ""
 echo "  Output: $OUT_DIR/"
-echo "    installed-official.txt  — all explicitly installed official packages"
-echo "    installed-aur.txt       — all explicitly installed AUR packages"
-echo "    untracked-official.txt  — official packages NOT in your config"
-echo "    untracked-aur.txt       — AUR packages NOT in your config"
-echo "    summary.md              — paste this into an LLM"
+echo "    ${TS}_installed-official.txt"
+echo "    ${TS}_installed-aur.txt"
+echo "    ${TS}_untracked-official.txt"
+echo "    ${TS}_untracked-aur.txt"
+echo "    ${TS}_summary.md        <- paste this into an LLM"
 echo ""
