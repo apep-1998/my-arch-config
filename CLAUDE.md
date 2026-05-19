@@ -78,9 +78,19 @@ After install, for the target user:
 - `~/dotfiles/` → `<repo>/dotfiles/` (the repo itself)
 - `~/.zshrc` → `~/dotfiles/zshrc`
 - `~/.config/<app>` → `~/dotfiles/config/<app>` for every subdirectory in `dotfiles/config/`
+- `~/.config/zsh_profile` → `profiles/<profile>/dotfiles/zsh_profile` (profile-specific zsh config, sourced by zshrc)
+- `~/.config/profile-bin/` → `profiles/<profile>/dotfiles/bin/` (profile-specific scripts, added to PATH via zsh_profile)
 - `~/.p10k.zsh` — copied (not symlinked, may have per-machine tweaks)
 - `~/.config/zsh_aliases` — copied (may have per-machine overrides)
 - `~/.config/greenclip.toml` — copied (clipboard history config)
+
+## Profile Overlays
+
+Each profile can have its own dotfiles overlay at `profiles/<profile>/dotfiles/`:
+- `zsh_profile` — sourced at the end of `zshrc`. Put profile-specific env vars, aliases, PATH additions here.
+- `bin/` — profile-specific scripts. Accessible at `~/.config/profile-bin/` which is in `$PATH` via `zsh_profile`.
+
+Base shared config stays in `dotfiles/`. Profile-specific config goes in `profiles/<profile>/dotfiles/`.
 
 ## Rules for AI Assistance
 

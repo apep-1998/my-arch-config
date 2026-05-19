@@ -1,0 +1,9 @@
+# Work profile — sourced at the end of ~/.zshrc
+# Put work-specific env vars, aliases, and PATH additions here.
+
+# Work scripts
+export PATH="$HOME/.config/profile-bin:$PATH"
+
+# Work git identity (override global if needed)
+# export GIT_AUTHOR_EMAIL="arsham.mohammadi@everphone.de"
+# export GIT_COMMITTER_EMAIL="arsham.mohammadi@everphone.de"

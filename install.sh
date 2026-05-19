@@ -163,6 +163,19 @@ chmod +x "$DOTFILES_DIR"/config/bin/* 2>/dev/null || true
 [ -f "$DOTFILES_DIR/zshrc" ] && \
     sudo -u "$USERNAME" ln -sf "$DOTFILES_DIR/zshrc" "$HOME_DIR/.zshrc"
 
+# Profile-specific dotfiles overlay
+PROFILE_DOTFILES="$SCRIPT_DIR/profiles/$PROFILE/dotfiles"
+if [ -d "$PROFILE_DOTFILES" ]; then
+    # zsh_profile — sourced at end of zshrc for profile-specific config
+    [ -f "$PROFILE_DOTFILES/zsh_profile" ] && \
+        sudo -u "$USERNAME" ln -sf "$PROFILE_DOTFILES/zsh_profile" "$HOME_DIR/.config/zsh_profile"
+    # profile-specific bin — separate from base bin, added to PATH via zsh_profile
+    [ -d "$PROFILE_DOTFILES/bin" ] && \
+        sudo -u "$USERNAME" ln -sfn "$PROFILE_DOTFILES/bin" "$HOME_DIR/.config/profile-bin"
+    chmod +x "$PROFILE_DOTFILES/bin/"* 2>/dev/null || true
+    log "  -> profile overlay: zsh_profile + profile-bin"
+fi
+
 # p10k — copied (not symlinked) so it can have per-user tweaks
 if [ -f "$DOTFILES_DIR/p10k.zsh" ] && [ ! -f "$HOME_DIR/.p10k.zsh" ]; then
     cp "$DOTFILES_DIR/p10k.zsh" "$HOME_DIR/.p10k.zsh"

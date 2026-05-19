@@ -1,0 +1,8 @@
+# Personal profile — sourced at the end of ~/.zshrc
+# Put personal-specific env vars, aliases, and PATH additions here.
+
+# Personal scripts
+export PATH="$HOME/.config/profile-bin:$PATH"
+
+# Go version manager
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"

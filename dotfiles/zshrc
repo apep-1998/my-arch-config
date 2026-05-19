@@ -36,6 +36,5 @@ if [ -d /opt/rocm/bin ]; then
   export LD_LIBRARY_PATH="/opt/rocm/lib:${LD_LIBRARY_PATH:-}"
 fi
 
-[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
-
-
+# Profile-specific config (env vars, aliases, PATH additions)
+[[ -f ~/.config/zsh_profile ]] && source ~/.config/zsh_profile

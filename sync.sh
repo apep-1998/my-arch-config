@@ -84,6 +84,17 @@ chmod +x "$DOTFILES_DIR"/config/bin/* 2>/dev/null || true
 [ -f "$DOTFILES_DIR/zshrc" ] && \
     ln -sf "$DOTFILES_DIR/zshrc" "$HOME_DIR/.zshrc"
 
+# Profile-specific dotfiles overlay
+PROFILE_DOTFILES="$SCRIPT_DIR/profiles/$PROFILE/dotfiles"
+if [ -d "$PROFILE_DOTFILES" ]; then
+    [ -f "$PROFILE_DOTFILES/zsh_profile" ] && \
+        ln -sf "$PROFILE_DOTFILES/zsh_profile" "$HOME_DIR/.config/zsh_profile"
+    [ -d "$PROFILE_DOTFILES/bin" ] && \
+        ln -sfn "$PROFILE_DOTFILES/bin" "$HOME_DIR/.config/profile-bin"
+    chmod +x "$PROFILE_DOTFILES/bin/"* 2>/dev/null || true
+    log "  -> profile overlay: zsh_profile + profile-bin"
+fi
+
 chown -h "$USERNAME:users" \
     "$HOME_DIR/dotfiles" \
     "$HOME_DIR/.zshrc" 2>/dev/null || true
