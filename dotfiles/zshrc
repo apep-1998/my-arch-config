@@ -36,5 +36,8 @@ if [ -d /opt/rocm/bin ]; then
   export LD_LIBRARY_PATH="/opt/rocm/lib:${LD_LIBRARY_PATH:-}"
 fi
 
+# nvm (installed via AUR to /usr/share/nvm)
+[ -s /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
+
 # Profile-specific config (env vars, aliases, PATH additions)
 [[ -f ~/.config/zsh_profile ]] && source ~/.config/zsh_profile
