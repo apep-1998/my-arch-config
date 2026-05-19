@@ -59,7 +59,7 @@ install_aur_file() {
     mapfile -t pkgs < <(grep -v '^\s*#' "$file" | grep -v '^\s*$')
     [ ${#pkgs[@]} -gt 0 ] || return 0
     log "AUR: $(basename "$file") (${#pkgs[@]})"
-    sudo -u "$aur_user" yay -S --needed --noconfirm "${pkgs[@]}"
+    sudo -u "$aur_user" yay -S --needed --noconfirm --overwrite '*' "${pkgs[@]}"
 }
 
 apply_hidden_apps() {
