@@ -1,0 +1,4 @@
+# AUR packages — PC only (AMD GPU / desktop)
+
+# GPU fan control (optional, uncomment if needed)
+# amdgpu-fan

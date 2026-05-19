@@ -125,8 +125,11 @@ fi
 # Base AUR packages
 install_aur_file "$SCRIPT_DIR/base/aur-packages.txt" "$USERNAME"
 
-# Profile AUR packages (if any)
-install_aur_file "$SCRIPT_DIR/profiles/$PROFILE/aur-packages.txt" "$USERNAME" 2>/dev/null || true
+# Machine AUR packages
+install_aur_file "$SCRIPT_DIR/machines/$MACHINE/aur-packages.txt" "$USERNAME"
+
+# Profile AUR packages
+install_aur_file "$SCRIPT_DIR/profiles/$PROFILE/aur-packages.txt" "$USERNAME"
 
 # ─── 6. Profile packages ──────────────────────────────────────────────────────
 step "6/8  Profile packages ($PROFILE)"

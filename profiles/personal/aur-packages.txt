@@ -1,0 +1,4 @@
+# AUR packages — Personal profile
+
+# Add personal-only AUR packages here
+# Example: spotify, discord, etc.
