@@ -383,7 +383,3 @@ qt6-virtualkeyboard
 # ── Shell ─────────────────────────────────────────────────────────────────────
 # Z shell
 zsh
-# suggests previous commands as you type (fish-like)
-zsh-autosuggestions
-# highlights valid/invalid commands as you type (fish-like)
-zsh-syntax-highlighting

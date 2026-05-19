@@ -170,6 +170,20 @@ log "Removed temporary sudoers rule"
 # ─── 5. Dotfiles ──────────────────────────────────────────────────────────────
 step "5/7  Dotfiles"
 
+OMZ_PLUGINS=/usr/share/oh-my-zsh/plugins
+for plugin_url in \
+    "https://github.com/zsh-users/zsh-autosuggestions" \
+    "https://github.com/zsh-users/zsh-syntax-highlighting" \
+    "https://github.com/zsh-users/zsh-history-substring-search"; do
+    plugin=$(basename "$plugin_url")
+    if [ ! -d "$OMZ_PLUGINS/$plugin" ]; then
+        git clone --depth=1 "$plugin_url" "$OMZ_PLUGINS/$plugin"
+        log "oh-my-zsh plugin: $plugin"
+    else
+        log "oh-my-zsh plugin already present: $plugin"
+    fi
+done
+
 sudo -u "$USERNAME" ln -sfn "$DOTFILES_DIR" "$HOME_DIR/dotfiles"
 log "~/dotfiles -> $DOTFILES_DIR"
 
