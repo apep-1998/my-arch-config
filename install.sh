@@ -184,9 +184,6 @@ for plugin_url in \
     fi
 done
 
-sudo -u "$USERNAME" ln -sfn "$DOTFILES_DIR" "$HOME_DIR/dotfiles"
-log "~/dotfiles -> $DOTFILES_DIR"
-
 sudo -u "$USERNAME" mkdir -p "$HOME_DIR/.config"
 
 for cfg_path in "$DOTFILES_DIR"/config/*/; do
