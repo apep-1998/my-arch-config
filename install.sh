@@ -237,7 +237,6 @@ systemctl enable bluetooth 2>/dev/null || warn "bluetooth service not found"
 
 [ "$MACHINE" = "laptop" ] && systemctl list-unit-files | grep -q tlp && {
     systemctl enable tlp
-    systemctl enable tlp-sleep
 }
 
 # ─── Save profile ─────────────────────────────────────────────────────────────
