@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# Function to display help
+show_help() {
+    echo "Usage: wifi [OPTION]"
+    echo "Options:"
+    echo "  -l   Scan and list nearby Wi-Fi networks"
+    echo "  -c   Select and connect to a Wi-Fi network"
+}
+
+# Function to list Wi-Fi networks
+list_wifi() {
+    echo "Scanning for networks..."
+    nmcli device wifi rescan 2>/dev/null
+    nmcli device wifi list
+}
+
+# Function to connect to a Wi-Fi network
+connect_wifi() {
+    echo "Scanning for networks..."
+    nmcli device wifi rescan 2>/dev/null
+    
+    # Capture SSIDs into an array (using -g for clean output)
+    mapfile -t ssids < <(nmcli -g SSID device wifi list)
+    
+    # Check if any networks were found
+    if [ ${#ssids[@]} -eq 0 ]; then
+        echo "No Wi-Fi networks found."
+        exit 0
+    fi
+
+    # Display networks with numbers
+    echo "Available Networks:"
+    # We retrieve the formatted list to show the user (including bars, security, etc.)
+    # We skip the header (NR>1) and number the lines
+    nmcli device wifi list | awk 'NR>1 {printf "%3d) %s\n", NR-1, $0}'
+
+    echo ""
+    read -p "Select a network by number: " choice
+
+    # Validate input
+    if [[ ! "$choice" =~ ^[0-9]+$ ]] || [ "$choice" -lt 1 ] || [ "$choice" -gt "${#ssids[@]}" ]; then
+        echo "Invalid selection."
+        exit 1
+    fi
+
+    # Get the SSID based on selection (index is choice - 1)
+    ssid="${ssids[$((choice-1))]}"
+
+    # Handle cases where SSID might be empty (hidden networks)
+    if [ -z "$ssid" ]; then
+        echo "Error: Selected network has no SSID (hidden?)."
+        exit 1
+    fi
+
+    echo "Selected: $ssid"
+    read -s -p "Enter Password: " password
+    echo ""
+
+    echo "Connecting to $ssid..."
+    nmcli device wifi connect "$ssid" password "$password"
+}
+
+# Main logic
+case "$1" in
+    -l)
+        list_wifi
+        ;;
+    -c)
+        connect_wifi
+        ;;
+    *)
+        show_help
+        ;;
+esac

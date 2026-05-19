@@ -351,6 +351,8 @@ unzip
 zip
 # copies text to the X clipboard from the terminal
 xclip
+# simulates keyboard/mouse input and queries window info (used by screenshot and rofi-pass scripts)
+xdotool
 # read/write support for NTFS drives (Windows disks)
 ntfs-3g
 # creates and checks FAT/FAT32 filesystems

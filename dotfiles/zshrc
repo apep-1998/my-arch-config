@@ -36,6 +36,6 @@ if [ -d /opt/rocm/bin ]; then
   export LD_LIBRARY_PATH="/opt/rocm/lib:${LD_LIBRARY_PATH:-}"
 fi
 
-[[ -s "/home/rsham/.gvm/scripts/gvm" ]] && source "/home/rsham/.gvm/scripts/gvm"
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
 

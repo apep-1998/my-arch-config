@@ -168,6 +168,9 @@ if [ -d "$DOTFILES_DIR" ]; then
     [ -f "$DOTFILES_DIR/config/mimeapps.list" ] && \
         sudo -u "$USERNAME" ln -sf "$DOTFILES_DIR/config/mimeapps.list" "$HOME_DIR/.config/mimeapps.list"
 
+    # make bin scripts executable
+    chmod +x "$DOTFILES_DIR"/config/bin/* 2>/dev/null || true
+
     # .zshrc
     [ -f "$DOTFILES_DIR/zshrc" ] && \
         sudo -u "$USERNAME" ln -sf "$DOTFILES_DIR/zshrc" "$HOME_DIR/.zshrc"
