@@ -385,3 +385,5 @@ qt6-virtualkeyboard
 zsh
 # Node Version Manager — install and switch between Node.js versions
 nvm
+# Rust compiler and Cargo package manager
+rust
