@@ -177,7 +177,11 @@ sudo -u "$USERNAME" mkdir -p "$HOME_DIR/.config"
 
 for cfg_path in "$DOTFILES_DIR"/config/*/; do
     cfg=$(basename "$cfg_path")
-    sudo -u "$USERNAME" ln -sfn "$DOTFILES_DIR/config/$cfg" "$HOME_DIR/.config/$cfg"
+    target="$HOME_DIR/.config/$cfg"
+    # If target is a real directory (not a symlink), remove it so ln -sfn replaces
+    # it rather than creating a symlink inside it (e.g. ~/.config/i3/i3/config).
+    [ -d "$target" ] && [ ! -L "$target" ] && rm -rf "$target"
+    sudo -u "$USERNAME" ln -sfn "$DOTFILES_DIR/config/$cfg" "$target"
     log "  -> ~/.config/$cfg"
 done
 
