@@ -17,7 +17,3 @@ tlp
 tlp-rdw
 # analyzes power consumption per device and suggests optimizations
 powertop
-
-# ── Backlight ─────────────────────────────────────────────────────────────────
-# controls screen brightness via ACPI (works with xorg-xbacklight)
-acpilight
