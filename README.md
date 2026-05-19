@@ -12,35 +12,29 @@ cd ~/.my-arch-config
 sudo bash install.sh
 ```
 
-The installer asks three questions:
+**First run** — asks three questions, then installs everything:
 
 1. **Machine type** — `pc` or `laptop`
 2. **Profile** — `personal` or `work`
-3. **Username** — who to configure (defaults to `arsham` for personal, `everphone` for work)
+3. **Username** — who to configure
 
-Then it installs packages and applies configs:
+**Every run after that** — loads the saved profile automatically, just asks "Continue?", then re-applies everything. Already-installed packages are skipped, new ones are installed, new symlinks are created.
 
 ```
-base packages
-  + machine packages       (pc = AMD/ROCm, laptop = Intel GPU + TLP)
-  + base AUR packages
-  + machine AUR packages
-  + profile packages
-  + profile AUR packages
-  → dotfiles symlinked into ~/dotfiles/
-  → system services enabled
+packages (base + machine + profile)   ← --needed, skips already installed
+→ dotfiles symlinked into ~/dotfiles/  ← idempotent, picks up new apps
+→ app visibility (hidden-apps.txt)
+→ system services
 ```
 
 ### Keeping machines in sync
 
-After pushing changes from one machine, on any other:
+After pulling updates from another machine:
 
 ```bash
-cd ~/.my-arch-config   # wherever you cloned it
-sudo bash sync.sh
+git pull
+sudo bash install.sh
 ```
-
-`sync.sh` pulls the latest git changes, re-applies symlinks (picks up any new apps), and installs any newly added packages — skipping everything already installed.
 
 ---
 
@@ -48,8 +42,7 @@ sudo bash sync.sh
 
 ```
 my-arch-config/
-├── install.sh                  ← run once on a fresh machine
-├── sync.sh                     ← run after pulling updates
+├── install.sh                  ← run this always (fresh install or update)
 │
 ├── base/
 │   ├── packages.txt            ← pacman packages on every machine
@@ -209,5 +202,6 @@ Always add a one-line `#` comment on the line directly above the package name.
 
 To apply updates from another machine later:
 ```bash
-sudo bash sync.sh
+git pull
+sudo bash install.sh
 ```

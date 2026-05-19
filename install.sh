@@ -231,8 +231,9 @@ systemctl enable bluetooth 2>/dev/null || warn "bluetooth service not found"
 }
 
 # ─── Save profile ─────────────────────────────────────────────────────────────
-mkdir -p "/etc/my-arch/$USERNAME"
-cat > "/etc/my-arch/$USERNAME/profile" <<EOF
+# Keyed by CALLING_USER (who ran sudo) so the lookup at the top always matches
+mkdir -p "/etc/my-arch/$CALLING_USER"
+cat > "/etc/my-arch/$CALLING_USER/profile" <<EOF
 MACHINE=$MACHINE
 PROFILE=$PROFILE
 USERNAME=$USERNAME
