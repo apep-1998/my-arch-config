@@ -1,10 +1,14 @@
-# Arch Linux Installer — Claude Code Context
+# my-arch-config — Claude Code Context
 
-This is a modular Arch Linux post-install script. It installs a full i3-based desktop environment by combining a shared base with machine-specific and profile-specific layers.
+This is a single repository that contains everything for my Arch Linux setup: the installer, all dotfiles, and a sync script. There is no separate dotfiles repo — dotfiles live here.
 
 ## What This Project Does
 
-`install.sh` is the entry point. It asks interactively for:
+- **`install.sh`** — run once on a fresh Arch machine (as root). Installs packages and wires up configs.
+- **`sync.sh`** — run after pulling updates from another machine (as root). Re-applies symlinks and installs new packages.
+- **`dotfiles/`** — the actual live configs. On any machine, `~/dotfiles/` is a symlink into this directory, wherever the repo was cloned.
+
+`install.sh` asks interactively for:
 - **Machine**: `pc` (AMD GPU + ROCm) or `laptop` (Intel Iris Xe + TLP)
 - **Profile**: `personal` (user: arsham) or `work` (user: everphone)
 - **Username**: who to configure
@@ -12,10 +16,13 @@ This is a modular Arch Linux post-install script. It installs a full i3-based de
 It then installs packages and applies dotfiles in order:
 `base → machine → base AUR → machine AUR → profile → profile AUR → dotfiles → services`
 
+After install, the saved profile is written to `/etc/my-arch/profile` so `sync.sh` can pick it up without asking again.
+
 ## Project Layout
 
 ```
-install.sh                      ← main script, contains all logic
+install.sh                      ← fresh install (run as root)
+sync.sh                         ← pull + re-apply (run as root)
 base/packages.txt               ← pacman packages for every setup
 base/aur-packages.txt           ← AUR packages for every setup
 machines/pc/packages.txt        ← AMD GPU + ROCm (pacman)
@@ -28,9 +35,15 @@ profiles/personal/packages.txt  ← personal pacman packages
 profiles/personal/aur-packages.txt ← personal AUR packages
 profiles/work/packages.txt      ← work pacman packages
 profiles/work/aur-packages.txt  ← work AUR (slack-desktop)
-dotfiles/                       ← bundled configs (copied/symlinked to ~/dotfiles)
-README.md                       ← human-readable documentation
+dotfiles/                       ← all configs — the canonical source
 ```
+
+## How Dotfiles Work
+
+`~/dotfiles/` is a symlink to `<repo>/dotfiles/` — wherever the repo was cloned. This means:
+- Editing `~/.config/i3/config` edits the file in the git repo directly (via symlink chain)
+- No copy step, no separate dotfiles repo, no syncing between them
+- Clone path doesn't matter: `~/.my-arch-config`, `~/projects/my-arch-config`, `/opt/arch` — all work
 
 ## Package File Format
 
@@ -41,8 +54,8 @@ One package per line. Lines starting with `#` and blank lines are ignored.
 ## Key Decisions
 
 - **Why two layers per machine/profile?** Packages in official repos go in `packages.txt`, AUR packages go in `aur-packages.txt`. They're separate because pacman and yay have different invocation and error behavior.
-- **Why bundled dotfiles?** The `dotfiles/` directory is a snapshot so the installer works offline or without a git remote. If the user has a remote repo they provide the URL at runtime.
-- **yay build**: yay is bootstrapped by building it from AUR as the target user (non-root), then installing the `.pkg.tar.zst` as root. `go` must be installed via pacman first.
+- **Why symlink instead of copy?** So every edit to a config is immediately tracked in git. No manual sync needed.
+- **yay build**: bootstrapped by building from AUR as the target user (non-root), then installing the `.pkg.tar.zst` as root. `go` must be installed via pacman first.
 - **No root for yay**: `yay` and `makepkg` must run as non-root. The script uses `sudo -u "$USERNAME"` for all AUR operations.
 
 ## Machines
@@ -62,17 +75,12 @@ One package per line. Lines starting with `#` and blank lines are ignored.
 ## Dotfiles Symlink Structure
 
 After install, for the target user:
-- `~/.config/greenclip.toml` — copied (clipboard history config)
+- `~/dotfiles/` → `<repo>/dotfiles/` (the repo itself)
 - `~/.zshrc` → `~/dotfiles/zshrc`
-- `~/.config/i3` → `~/dotfiles/config/i3`
-- `~/.config/polybar` → `~/dotfiles/config/polybar`
-- `~/.config/rofi` → `~/dotfiles/config/rofi`
-- `~/.config/dunst` → `~/dotfiles/config/dunst`
-- `~/.config/yazi` → `~/dotfiles/config/yazi`
-- `~/.config/zed` → `~/dotfiles/config/zed`
-- `~/.config/opencode` → `~/dotfiles/config/opencode`
-- `~/.p10k.zsh` — copied (not symlinked)
-- `~/.config/zsh_aliases` — copied (not symlinked)
+- `~/.config/<app>` → `~/dotfiles/config/<app>` for every subdirectory in `dotfiles/config/`
+- `~/.p10k.zsh` — copied (not symlinked, may have per-machine tweaks)
+- `~/.config/zsh_aliases` — copied (may have per-machine overrides)
+- `~/.config/greenclip.toml` — copied (clipboard history config)
 
 ## Rules for AI Assistance
 
@@ -84,9 +92,9 @@ After install, for the target user:
 
 3. **Adding a new machine or profile**: Create the full set of files (`packages.txt`, `aur-packages.txt`, optionally `setup.sh`), add the option to `install.sh`'s `select_option` call, update the `DEFAULT_USER` case if it's a profile, and update README.md.
 
-4. **Editing dotfiles**: The `dotfiles/` directory in this repo is a bundled snapshot. If you edit configs here, the same change should be applied to the live `~/dotfiles/` on the actual machine. They are not automatically synced.
+4. **Editing dotfiles**: Edit directly — `dotfiles/` is the live source. Changes here immediately affect the machine via symlinks. No separate sync step needed.
 
-5. **install.sh structure**: The 8-step order (update → multilib → base pkgs → machine pkgs → AUR → profile pkgs → dotfiles → services) must be preserved. Steps are numbered in the output — keep that numbering accurate if steps are added or removed.
+5. **install.sh / sync.sh structure**: The 8-step order in install.sh and 3-step order in sync.sh must be preserved. Keep step numbers in the output accurate if steps change.
 
 6. **Every package must have a comment above it** describing what it does in one short line. This applies to every `packages.txt` and `aur-packages.txt` file. When adding a new package, always write the comment on the line directly above the package name — no blank line between the comment and the package. Keep it factual and brief, like:
    ```

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Arch Linux installer
+# Arch Linux installer — part of my-arch-config
 # Usage: sudo bash install.sh
 # Combines: base + machine (pc|laptop) + profile (personal|work)
 
@@ -55,12 +55,11 @@ esac
 read -rp "Username [${DEFAULT_USER}]: " USERNAME
 USERNAME="${USERNAME:-$DEFAULT_USER}"
 
-read -rp "Dotfiles repo URL (leave blank to use bundled): " DOTFILES_URL
-
 echo ""
 log "Machine : $MACHINE"
 log "Profile : $PROFILE"
 log "User    : $USERNAME"
+log "Repo    : $SCRIPT_DIR"
 echo ""
 read -rp "Proceed? [y/N] " confirm
 [[ "$confirm" =~ ^[Yy]$ ]] || { echo "Aborted."; exit 0; }
@@ -69,7 +68,6 @@ read -rp "Proceed? [y/N] " confirm
 install_pkg_file() {
     local file="$1"
     [ -f "$file" ] || return 0
-    # Strip comments and blank lines
     mapfile -t pkgs < <(grep -v '^\s*#' "$file" | grep -v '^\s*$')
     [ ${#pkgs[@]} -gt 0 ] || return 0
     log "Installing from $(basename "$(dirname "$file")")/$(basename "$file") (${#pkgs[@]} packages)"
@@ -139,62 +137,51 @@ install_pkg_file "$SCRIPT_DIR/profiles/$PROFILE/packages.txt"
 step "7/8  Dotfiles and configs"
 
 HOME_DIR="/home/$USERNAME"
-DOTFILES_DIR="$HOME_DIR/dotfiles"
+DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
 
-# Clone or copy dotfiles
-if [ -n "$DOTFILES_URL" ]; then
-    log "Cloning dotfiles from $DOTFILES_URL"
-    sudo -u "$USERNAME" git clone "$DOTFILES_URL" "$DOTFILES_DIR"
-elif [ -d "$SCRIPT_DIR/dotfiles" ]; then
-    log "Copying bundled dotfiles"
-    cp -r "$SCRIPT_DIR/dotfiles" "$DOTFILES_DIR"
-    chown -R "$USERNAME:users" "$DOTFILES_DIR"
-else
-    warn "No dotfiles source found — skipping dotfiles setup"
-fi
+# ~/dotfiles is a symlink into this repo — path-independent regardless of clone location
+sudo -u "$USERNAME" ln -sfn "$DOTFILES_DIR" "$HOME_DIR/dotfiles"
+log "Linked ~/dotfiles -> $DOTFILES_DIR"
 
-# Set up symlinks if dotfiles directory exists
-if [ -d "$DOTFILES_DIR" ]; then
-    sudo -u "$USERNAME" mkdir -p "$HOME_DIR/.config"
+sudo -u "$USERNAME" mkdir -p "$HOME_DIR/.config"
 
-    # Symlink each config subdirectory
-    for cfg_path in "$DOTFILES_DIR"/config/*/; do
-        cfg=$(basename "$cfg_path")
-        sudo -u "$USERNAME" ln -sfn "$DOTFILES_DIR/config/$cfg" "$HOME_DIR/.config/$cfg"
-        log "  -> ~/.config/$cfg"
-    done
+# Symlink each config subdirectory
+for cfg_path in "$DOTFILES_DIR"/config/*/; do
+    cfg=$(basename "$cfg_path")
+    sudo -u "$USERNAME" ln -sfn "$DOTFILES_DIR/config/$cfg" "$HOME_DIR/.config/$cfg"
+    log "  -> ~/.config/$cfg"
+done
 
-    # mimeapps.list
-    [ -f "$DOTFILES_DIR/config/mimeapps.list" ] && \
-        sudo -u "$USERNAME" ln -sf "$DOTFILES_DIR/config/mimeapps.list" "$HOME_DIR/.config/mimeapps.list"
+# mimeapps.list
+[ -f "$DOTFILES_DIR/config/mimeapps.list" ] && \
+    sudo -u "$USERNAME" ln -sf "$DOTFILES_DIR/config/mimeapps.list" "$HOME_DIR/.config/mimeapps.list"
 
-    # make bin scripts executable
-    chmod +x "$DOTFILES_DIR"/config/bin/* 2>/dev/null || true
+# make bin scripts executable
+chmod +x "$DOTFILES_DIR"/config/bin/* 2>/dev/null || true
 
-    # .zshrc
-    [ -f "$DOTFILES_DIR/zshrc" ] && \
-        sudo -u "$USERNAME" ln -sf "$DOTFILES_DIR/zshrc" "$HOME_DIR/.zshrc"
-fi
+# .zshrc
+[ -f "$DOTFILES_DIR/zshrc" ] && \
+    sudo -u "$USERNAME" ln -sf "$DOTFILES_DIR/zshrc" "$HOME_DIR/.zshrc"
 
-# p10k config
-if [ -f "$SCRIPT_DIR/dotfiles/p10k.zsh" ] && [ ! -f "$HOME_DIR/.p10k.zsh" ]; then
-    cp "$SCRIPT_DIR/dotfiles/p10k.zsh" "$HOME_DIR/.p10k.zsh"
+# p10k — copied (not symlinked) so it can have per-user tweaks
+if [ -f "$DOTFILES_DIR/p10k.zsh" ] && [ ! -f "$HOME_DIR/.p10k.zsh" ]; then
+    cp "$DOTFILES_DIR/p10k.zsh" "$HOME_DIR/.p10k.zsh"
     chown "$USERNAME:users" "$HOME_DIR/.p10k.zsh"
 fi
 
-# zsh_aliases
-if [ -f "$SCRIPT_DIR/dotfiles/zsh_aliases" ]; then
-    cp "$SCRIPT_DIR/dotfiles/zsh_aliases" "$HOME_DIR/.config/zsh_aliases"
+# zsh_aliases — copied so each machine can have local overrides
+if [ -f "$DOTFILES_DIR/zsh_aliases" ]; then
+    cp "$DOTFILES_DIR/zsh_aliases" "$HOME_DIR/.config/zsh_aliases"
     chown "$USERNAME:users" "$HOME_DIR/.config/zsh_aliases"
 fi
 
-# greenclip config
-if [ -f "$SCRIPT_DIR/dotfiles/greenclip.toml" ]; then
-    cp "$SCRIPT_DIR/dotfiles/greenclip.toml" "$HOME_DIR/.config/greenclip.toml"
+# greenclip config — copied (contains machine-specific history path)
+if [ -f "$DOTFILES_DIR/greenclip.toml" ]; then
+    cp "$DOTFILES_DIR/greenclip.toml" "$HOME_DIR/.config/greenclip.toml"
     chown "$USERNAME:users" "$HOME_DIR/.config/greenclip.toml"
 fi
 
-# oh-my-zsh cache dir
+# oh-my-zsh cache and misc dirs
 sudo -u "$USERNAME" mkdir -p "$HOME_DIR/.cache/oh-my-zsh"
 sudo -u "$USERNAME" mkdir -p "$HOME_DIR/.config/bin"
 sudo -u "$USERNAME" mkdir -p "$HOME_DIR/.config/autorandr"
@@ -213,6 +200,16 @@ if [ -f "$SCRIPT_DIR/profiles/$PROFILE/setup.sh" ]; then
     log "Running profile-specific setup..."
     bash "$SCRIPT_DIR/profiles/$PROFILE/setup.sh" "$USERNAME"
 fi
+
+# Save profile so sync.sh can read it without asking again
+mkdir -p /etc/my-arch
+cat > /etc/my-arch/profile <<EOF
+MACHINE=$MACHINE
+PROFILE=$PROFILE
+USERNAME=$USERNAME
+REPO_DIR=$SCRIPT_DIR
+EOF
+log "Saved profile to /etc/my-arch/profile"
 
 # ─── 8. Services ──────────────────────────────────────────────────────────────
 step "8/8  System services"
@@ -239,8 +236,11 @@ echo ""
 echo "  Machine : $MACHINE"
 echo "  Profile : $PROFILE"
 echo "  User    : $USERNAME"
+echo "  Dotfiles: $DOTFILES_DIR"
 echo ""
 echo "Next steps:"
 echo "  1. Reboot"
 echo "  2. Log in via SDDM"
 echo "  3. Run: autorandr --save $(hostname)"
+echo ""
+echo "To sync updates later: sudo bash $SCRIPT_DIR/sync.sh"

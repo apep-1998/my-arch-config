@@ -1,18 +1,24 @@
-# Arch Linux Installer
+# my-arch-config
 
-A modular, interactive Arch Linux post-install script that sets up a full i3-based desktop environment. It combines a shared base with machine-specific and profile-specific layers so the same codebase covers a desktop PC, a laptop, a personal setup, and a work setup — with no duplication.
+Everything for my Arch Linux setup in one place: installer, dotfiles, and sync script. Clone it anywhere, run `install.sh` once, and you're done. After that, `sync.sh` keeps any machine up to date with a single command.
 
 ---
 
 ## How It Works
 
-Running `sudo bash install.sh` presents an interactive prompt that asks three questions:
+```bash
+git clone <repo> ~/.my-arch-config   # or any path you want
+cd ~/.my-arch-config
+sudo bash install.sh
+```
+
+The installer asks three questions:
 
 1. **Machine type** — `pc` or `laptop`
 2. **Profile** — `personal` or `work`
 3. **Username** — who to configure (defaults to `arsham` for personal, `everphone` for work)
 
-It then installs packages and applies configs in this order:
+Then it installs packages and applies configs:
 
 ```
 base packages
@@ -21,19 +27,29 @@ base packages
   + machine AUR packages
   + profile packages
   + profile AUR packages
-  → dotfiles + symlinks
-  → system services
+  → dotfiles symlinked into ~/dotfiles/
+  → system services enabled
 ```
 
-Everything is additive — each layer only adds what it specifically needs.
+### Keeping machines in sync
+
+After pushing changes from one machine, on any other:
+
+```bash
+cd ~/.my-arch-config   # wherever you cloned it
+sudo bash sync.sh
+```
+
+`sync.sh` pulls the latest git changes, re-applies symlinks (picks up any new apps), and installs any newly added packages — skipping everything already installed.
 
 ---
 
 ## Project Structure
 
 ```
-arch-installer/
-├── install.sh                  ← main entry point
+my-arch-config/
+├── install.sh                  ← run once on a fresh machine
+├── sync.sh                     ← run after pulling updates
 │
 ├── base/
 │   ├── packages.txt            ← pacman packages on every machine
@@ -57,7 +73,7 @@ arch-installer/
 │       ├── packages.txt        ← work-only pacman packages
 │       └── aur-packages.txt    ← work-only AUR (slack-desktop)
 │
-└── dotfiles/                   ← bundled copy of all configs
+└── dotfiles/                   ← all configs live here
     ├── zshrc                   ← symlinked to ~/.zshrc
     ├── p10k.zsh                ← copied to ~/.p10k.zsh
     ├── zsh_aliases             ← copied to ~/.config/zsh_aliases
@@ -69,31 +85,37 @@ arch-installer/
         ├── kitty/              ← symlinked to ~/.config/kitty
         ├── yazi/               ← symlinked to ~/.config/yazi
         ├── zed/                ← symlinked to ~/.config/zed
-        └── opencode/           ← symlinked to ~/.config/opencode
+        ├── opencode/           ← symlinked to ~/.config/opencode
+        └── bin/                ← symlinked to ~/.config/bin (utility scripts)
 ```
 
 ---
 
-## Package Files Format
+## How Dotfiles Work
 
-All `packages.txt` and `aur-packages.txt` files use the same format:
-
-- One package name per line
-- Lines starting with `#` are comments and are ignored
-- Blank lines are ignored
+After install, `~/dotfiles/` is a **symlink into the repo** — wherever you cloned it:
 
 ```
-# This is a comment
-kitty
-firefox
+~/.config/i3/  →  ~/dotfiles/config/i3/  →  ~/.my-arch-config/dotfiles/config/i3/
+```
 
-# Another section
-bat
+Editing any config file edits the file in the git repo directly. No separate dotfiles repo, no manual sync. Just edit → commit → push → `sync.sh` on other machines.
+
+---
+
+## Package File Format
+
+One package per line. Every package has a `#` comment on the line directly above it:
+
+```
+# fast file search (find alternative)
 fd
+# Slack team messaging desktop client
+slack-desktop
 ```
 
-`packages.txt` → installed via `pacman -S --needed`
-`aur-packages.txt` → installed via `yay -S --needed`
+- `packages.txt` → installed via `pacman -S --needed`
+- `aur-packages.txt` → installed via `yay -S --needed`
 
 ---
 
@@ -123,19 +145,6 @@ fd
 
 ---
 
-## Dotfiles Setup
-
-The `dotfiles/` directory is a bundled snapshot of the actual config files. When the installer runs, it:
-
-1. Copies the entire `dotfiles/` directory to `~/dotfiles/` for the target user
-2. Creates symlinks from `~/.config/<app>` → `~/dotfiles/config/<app>` for each app
-3. Copies `p10k.zsh`, `zsh_aliases`, and `greenclip.toml` directly (not symlinked)
-4. Symlinks `~/.zshrc` → `~/dotfiles/zshrc`
-
-Alternatively, if you provide a git URL when prompted, the installer will `git clone` that URL instead of copying the bundled files. This is useful for keeping dotfiles in sync with a remote repo.
-
----
-
 ## Installed Software
 
 ### Desktop Environment
@@ -144,7 +153,7 @@ Alternatively, if you provide a git URL when prompted, the installer will `git c
 - **Launcher**: Rofi + rofi-pass (password manager) + rofi-greenclip (clipboard history, `mod+c`)
 - **Notifications**: Dunst
 - **Display manager**: SDDM with sddm-astronaut-theme
-- **Terminal**: Kitty + Gnome Terminal
+- **Terminal**: Kitty
 
 ### Shell
 - **Shell**: Zsh with oh-my-zsh
@@ -158,6 +167,7 @@ Alternatively, if you provide a git URL when prompted, the installer will `git c
 - **Image viewer**: nsxiv
 - **AI tools**: Claude Code, OpenCode, Gemini CLI
 - **Media**: playerctl, pulsemixer, pasystray, blueman, wiremix
+- **Dev**: git, github-cli, docker, go, python, node
 
 ### Fonts
 Full Nerd Fonts collection (all `ttf-*-nerd` and `otf-*-nerd` packages) plus Noto CJK/emoji.
@@ -176,32 +186,28 @@ Full Nerd Fonts collection (all `ttf-*-nerd` and `otf-*-nerd` packages) plus Not
 
 1. Create `profiles/<name>/packages.txt`
 2. Create `profiles/<name>/aur-packages.txt`
-3. Create `profiles/<name>/setup.sh` (optional)
-4. Add `"<name>"` to the `select_option` call and the `DEFAULT_USER` case in `install.sh`
-5. **Update this README**
+3. Add `"<name>"` to the `select_option` call and the `DEFAULT_USER` case in `install.sh`
+4. **Update this README**
 
 ## Adding Packages
 
 - Official repo package → add to the appropriate `packages.txt`
 - AUR package → add to the appropriate `aur-packages.txt`
-- If it belongs everywhere: `base/`
-- If it's GPU/hardware-specific: `machines/<machine>/`
-- If it's only for one use case: `profiles/<profile>/`
+- Needed everywhere → `base/`
+- GPU/hardware-specific → `machines/<machine>/`
+- Only for one use case → `profiles/<profile>/`
+
+Always add a one-line `#` comment on the line directly above the package name.
 
 ---
 
-## Usage
+## After Install
 
-```bash
-# On a fresh Arch install, after base system is set up:
-git clone <this-repo-url> ~/arch-installer
-cd ~/arch-installer
-sudo bash install.sh
-```
-
-You will be asked to choose machine type, profile, and username. The install takes 10–30 minutes depending on internet speed (nerd fonts and browsers are large downloads).
-
-After install:
 1. Reboot
 2. Log in via SDDM
-3. Run `autorandr --save <hostname>` to save your display layout
+3. Run `autorandr --save $(hostname)` to save your display layout
+
+To apply updates from another machine later:
+```bash
+sudo bash sync.sh
+```

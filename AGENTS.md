@@ -1,12 +1,17 @@
-# Arch Linux Installer — AI Agent Context
+# my-arch-config — AI Agent Context
 
 This file provides context for AI coding agents (Codex, Gemini, Cursor, etc.) working on this repository.
 
 ## What This Is
 
-A modular Arch Linux post-install script that sets up a full i3-based desktop environment. The entry point is `install.sh`. It is interactive: it asks for a machine type and profile, then installs the right combination of packages and applies dotfiles.
+A single repository containing everything for an Arch Linux setup: the installer script, all dotfiles/configs, and a sync script. There is no separate dotfiles repo — everything lives here.
 
-## Combinations Supported
+| Script | Purpose |
+|--------|---------|
+| `install.sh` | Run once on a fresh Arch machine (as root) — installs packages, applies configs |
+| `sync.sh` | Run after `git pull` on any machine (as root) — re-applies symlinks, installs new packages |
+
+## Supported Combinations
 
 | Machine | Profile | User | Description |
 |---------|---------|------|-------------|
@@ -15,31 +20,34 @@ A modular Arch Linux post-install script that sets up a full i3-based desktop en
 | `laptop` | `personal` | arsham | Laptop with Intel GPU + battery mgmt, personal |
 | `laptop` | `work` | everphone | Laptop with Intel GPU + battery mgmt, work |
 
-## Directory Structure and What Goes Where
+## How Dotfiles Work
+
+`~/dotfiles/` on any machine is a symlink to `<repo>/dotfiles/` — wherever the repo was cloned. Clone path doesn't matter. This means:
+- Editing `~/.config/i3/config` edits the git-tracked file directly (through symlink chain)
+- No separate dotfiles repo, no copy step, no manual sync
+
+## Directory Structure
 
 ```
+install.sh              fresh install script (run as root)
+sync.sh                 pull + re-apply script (run as root)
 base/
-  packages.txt          pacman packages installed on every machine + profile
-  aur-packages.txt      AUR packages installed on every machine + profile
-
+  packages.txt          pacman packages on every machine + profile
+  aur-packages.txt      AUR packages on every machine + profile
 machines/pc/
   packages.txt          AMD GPU drivers + full ROCm compute stack
-  aur-packages.txt      AUR packages only needed on the desktop PC
-  setup.sh              Bash script run after packages; sets ROCm env, video group
-
+  aur-packages.txt      AUR packages only for desktop PC
+  setup.sh              post-install: ROCm env, video group
 machines/laptop/
   packages.txt          Intel GPU drivers + TLP power management
-  aur-packages.txt      AUR packages only needed on the laptop (auto-cpufreq)
-  setup.sh              Bash script run after packages; enables TLP, video group
-
+  aur-packages.txt      AUR packages only for laptop (auto-cpufreq)
+  setup.sh              post-install: TLP enable, video group
 profiles/personal/
   packages.txt          Pacman packages for personal use
   aur-packages.txt      AUR packages for personal use
-
 profiles/work/
   packages.txt          Pacman packages for work use (user: everphone)
-  aur-packages.txt      AUR packages for work use (slack-desktop)
-
+  aur-packages.txt      AUR packages for work (slack-desktop)
 dotfiles/
   zshrc                 Zsh config (symlinked to ~/.zshrc)
   p10k.zsh              Powerlevel10k config (copied to ~/.p10k.zsh)
@@ -51,6 +59,7 @@ dotfiles/
   config/yazi/          TUI file manager config
   config/zed/           Zed editor settings
   config/opencode/      OpenCode AI assistant config
+  config/bin/           Utility scripts (filemanager, audio, wifi helpers)
 ```
 
 ## Package File Format
@@ -77,15 +86,23 @@ another-package
    - `machines/<machine>/aur-packages.txt`
    - `profiles/<profile>/aur-packages.txt`
 6. Install `profiles/<profile>/packages.txt`
-7. Set up dotfiles: copy `dotfiles/` to `~/dotfiles/`, create symlinks, set shell to zsh
+7. Set up dotfiles: symlink `~/dotfiles/` → `<repo>/dotfiles/`, create `~/.config/*` symlinks, copy p10k/zsh_aliases/greenclip, set shell to zsh
 8. Enable systemd services (NetworkManager, sddm, bluetooth, tlp)
+
+After install, saves `/etc/my-arch/profile` with machine/profile/username so `sync.sh` can read it.
+
+## sync.sh Flow (3 steps)
+
+1. `git pull --rebase` in the repo
+2. Re-apply all `~/.config/*` symlinks (idempotent — picks up newly added apps)
+3. Install any new packages from all applicable package files (using `--needed`, skips already installed)
 
 ## Mandatory Rules for Any Change
 
-**After every change, update README.md to match.** The README is the human-facing source of truth. If you add a machine, profile, package, or change any behavior, the README must reflect it.
+**After every change, update README.md to match.** The README is the human-facing source of truth.
 
 Specific rules:
-- New package → add to the most specific applicable layer; **always add a one-line comment directly above the package name** describing what it does — no blank line between comment and package name. Example:
+- New package → add to the most specific applicable layer; **always add a one-line comment directly above the package name** — no blank line between comment and package. Example:
   ```
   # fast file search (find alternative)
   fd
@@ -96,7 +113,7 @@ Specific rules:
 - New machine → full set of files + `select_option` entry in `install.sh` + README table + README section
 - New profile → full set of files + `select_option` entry + `DEFAULT_USER` case + README table + README section
 - Editing `install.sh` step order or count → update the step numbers in the script output AND in README
-- Editing dotfiles → note that `dotfiles/` here is a snapshot; the live files on the machine are separate
+- Editing dotfiles → changes take effect immediately on the machine via symlinks (no separate sync needed)
 - Never add `--noconfirm` to `pacman` without `--needed`
 - Never run `yay` or `makepkg` as root — always `sudo -u "$USERNAME"`
 
@@ -107,4 +124,6 @@ Specific rules:
 - **AMD GPU**: The PC uses AMD Radeon. Packages: `vulkan-radeon`, `xf86-video-amdgpu`, `lib32-vulkan-radeon` + full ROCm stack.
 - **Shell**: zsh with oh-my-zsh (`oh-my-zsh-git` from AUR), Powerlevel10k theme, zsh-autosuggestions + zsh-syntax-highlighting.
 - **Display manager**: SDDM with `sddm-astronaut-theme` (AUR). Config at `/etc/sddm.conf`.
-- **Dotfile symlinks**: Each `dotfiles/config/<app>` is symlinked to `~/.config/<app>`. `p10k.zsh`, `zsh_aliases`, and `greenclip.toml` are copied (not symlinked) because they may have per-user modifications.
+- **Dotfile symlinks**: `~/dotfiles/` → `<repo>/dotfiles/`. Each `dotfiles/config/<app>` is then symlinked to `~/.config/<app>`. `p10k.zsh`, `zsh_aliases`, and `greenclip.toml` are copied (not symlinked) because they may have per-machine modifications.
+- **Keyboard layout**: Per-window layout tracking via `dotfiles/config/i3/scripts/i3-events/main.py` (Python async i3ipc). Lock screen always forces English (`us`) layout via `lock.sh` calling `setxkbmap` before `i3lock`.
+- **Profile persistence**: Saved to `/etc/my-arch/profile` after install. `sync.sh` reads this so it knows which machine/profile to sync.
