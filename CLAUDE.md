@@ -62,6 +62,7 @@ One package per line. Lines starting with `#` and blank lines are ignored.
 ## Dotfiles Symlink Structure
 
 After install, for the target user:
+- `~/.config/greenclip.toml` — copied (clipboard history config)
 - `~/.zshrc` → `~/dotfiles/zshrc`
 - `~/.config/i3` → `~/dotfiles/config/i3`
 - `~/.config/polybar` → `~/dotfiles/config/polybar`
@@ -72,7 +73,6 @@ After install, for the target user:
 - `~/.config/opencode` → `~/dotfiles/config/opencode`
 - `~/.p10k.zsh` — copied (not symlinked)
 - `~/.config/zsh_aliases` — copied (not symlinked)
-- `~/.config/greenclip.toml` — copied with path substitution
 
 ## Rules for AI Assistance
 

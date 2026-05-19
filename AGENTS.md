@@ -44,7 +44,6 @@ dotfiles/
   zshrc                 Zsh config (symlinked to ~/.zshrc)
   p10k.zsh              Powerlevel10k config (copied to ~/.p10k.zsh)
   zsh_aliases           Shell aliases (copied to ~/.config/zsh_aliases)
-  greenclip.toml        Clipboard manager config (copied, path-substituted)
   config/i3/            i3 window manager config + scripts + wallpapers
   config/polybar/       Polybar status bar config
   config/rofi/          Rofi launcher theme

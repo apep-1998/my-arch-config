@@ -8,7 +8,7 @@ claude-code
 google-chrome
 # community-driven zsh framework with plugins and themes
 oh-my-zsh-git
-# clipboard history manager integrated with rofi
+# clipboard history manager — shows clipboard history in rofi (mod+c)
 rofi-greenclip
 # password manager (pass) interface for rofi
 rofi-pass

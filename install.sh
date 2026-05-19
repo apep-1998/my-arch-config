@@ -191,7 +191,6 @@ fi
 # greenclip config
 if [ -f "$SCRIPT_DIR/dotfiles/greenclip.toml" ]; then
     cp "$SCRIPT_DIR/dotfiles/greenclip.toml" "$HOME_DIR/.config/greenclip.toml"
-    sed -i "s|/home/rsham/|$HOME_DIR/|g" "$HOME_DIR/.config/greenclip.toml"
     chown "$USERNAME:users" "$HOME_DIR/.config/greenclip.toml"
 fi
 

@@ -61,7 +61,6 @@ arch-installer/
     ├── zshrc                   ← symlinked to ~/.zshrc
     ├── p10k.zsh                ← copied to ~/.p10k.zsh
     ├── zsh_aliases             ← copied to ~/.config/zsh_aliases
-    ├── greenclip.toml          ← copied to ~/.config/greenclip.toml
     └── config/
         ├── i3/                 ← symlinked to ~/.config/i3
         ├── polybar/            ← symlinked to ~/.config/polybar
@@ -142,7 +141,7 @@ Alternatively, if you provide a git URL when prompted, the installer will `git c
 ### Desktop Environment
 - **WM**: i3-wm with i3blocks, i3lock, i3status-rust
 - **Bar**: Polybar
-- **Launcher**: Rofi + rofi-pass (password manager) + rofi-greenclip (clipboard)
+- **Launcher**: Rofi + rofi-pass (password manager) + rofi-greenclip (clipboard history, `mod+c`)
 - **Notifications**: Dunst
 - **Display manager**: SDDM with sddm-astronaut-theme
 - **Terminal**: Kitty + Gnome Terminal
