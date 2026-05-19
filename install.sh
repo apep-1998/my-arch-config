@@ -29,17 +29,17 @@ echo -e "${RESET}"
 select_option() {
     local prompt="$1"; shift
     local options=("$@")
-    echo -e "${CYAN}$prompt${RESET}"
+    echo -e "${CYAN}$prompt${RESET}" >&2
     for i in "${!options[@]}"; do
-        echo "  $((i+1))) ${options[$i]}"
+        echo "  $((i+1))) ${options[$i]}" >&2
     done
     while true; do
-        read -rp "Choice [1-${#options[@]}]: " choice
+        read -rp "Choice [1-${#options[@]}]: " choice <&2
         if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#options[@]} )); then
             echo "${options[$((choice-1))]}"
             return
         fi
-        echo "Invalid choice, try again."
+        echo "Invalid choice, try again." >&2
     done
 }
 
