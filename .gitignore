@@ -1,6 +1,6 @@
 # Don't track venv/compiled artifacts inside bundled dotfiles
-dotfiles/config/i3/scripts/i3-events/.venv/
-dotfiles/config/i3/scripts/i3-events/__pycache__/
+**/.venv/
+**/__pycache__/
 *.pyc
 
 # Editor
