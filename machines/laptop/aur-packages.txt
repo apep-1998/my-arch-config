@@ -1,4 +1,4 @@
 # AUR packages — Laptop only
 
-# Better battery/power management than TLP alone
+# intelligent CPU frequency scaling (better battery life than TLP alone)
 auto-cpufreq

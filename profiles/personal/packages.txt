@@ -1,10 +1,5 @@
-# Personal profile packages
+# Personal profile packages (user: arsham)
 
-# AI tools
-gemini-cli
-opencode
-claude-code
-
-# Dev tools
-uv
+# ── Dev tools ─────────────────────────────────────────────────────────────────
+# Go programming language compiler and toolchain
 go

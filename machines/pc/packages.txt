@@ -1,16 +1,27 @@
-# PC-specific packages (AMD GPU + ROCm compute)
+# PC-specific packages — AMD GPU + ROCm compute stack
 
-# AMD GPU
+# ── AMD GPU ───────────────────────────────────────────────────────────────────
+# 32-bit Vulkan driver for AMD (needed for Steam and Wine)
 lib32-vulkan-radeon
+# Vulkan driver for AMD Radeon GPUs
 vulkan-radeon
+# AMD GPU display driver (kernel modesetting)
 xf86-video-amdgpu
+# 32-bit Mesa OpenGL (needed for Steam and Wine)
 lib32-mesa
 
-# ROCm AI/compute stack
+# ── ROCm — GPU compute stack ──────────────────────────────────────────────────
+# ROCm BLAS (Basic Linear Algebra) on AMD GPU
 hipblas
+# ROCm deep learning primitives (convolutions, activations, etc.)
 miopen-hip
+# ROCm multi-GPU communication library (used by distributed training)
 rccl
+# ROCm BLAS library for GPU-accelerated math
 rocblas
+# meta-package: all ROCm HIP runtime libraries
 rocm-hip-libraries
+# ROCm SDK: HIP compiler, runtime, and dev headers
 rocm-hip-sdk
+# ROCm system management: GPU stats, clock control, power monitoring
 rocm-smi-lib

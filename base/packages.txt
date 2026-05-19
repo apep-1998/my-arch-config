@@ -1,202 +1,385 @@
 # Base packages — installed on every machine regardless of type or profile
 
-# Core
+# ── Core ──────────────────────────────────────────────────────────────────────
+# base Arch Linux system
 base
+# compilers, make, pkg-config and other build essentials
 base-devel
+# tab completion for bash commands
 bash-completion
+# version control
 git
+# simple terminal text editor
 nano
+# powerful terminal text editor
 vim
+# SSH client and server
 openssh
 
-# Network
+# ── Network ───────────────────────────────────────────────────────────────────
+# manages wired and wireless network connections
 networkmanager
+# DHCP client for obtaining IP addresses
 dhcpcd
+# modern Wi-Fi daemon (replaces wpa_supplicant)
 iwd
+# NetworkManager system tray icon and editor
 network-manager-applet
+# wireless regulatory database (legal channel/power limits per country)
 wireless-regdb
 
-# Xorg
+# ── Xorg ──────────────────────────────────────────────────────────────────────
+# X display server
 xorg-server
+# shared files required by X server
 xorg-server-common
+# starts an X session (xinitrc / startx)
 xorg-xinit
+# sets keyboard layout and variant
 xorg-setxkbmap
+# manages monitor outputs, resolutions and positions
 xorg-xrandr
+# loads X resources (DPI, colors, fonts) from ~/.Xresources
 xorg-xrdb
+# sets X preferences like bell, screensaver and pointer
 xorg-xset
+# lists and configures input devices (mice, tablets, touchscreens)
 xorg-xinput
+# prints window properties (class, name, type — used in i3 config)
 xorg-xprop
+# shows raw X events for debugging keybinds
 xorg-xev
+# kills a window by clicking on it
 xorg-xkill
+# controls screen brightness via X
 xorg-xbacklight
+# X authentication tokens
 xorg-xauth
+# remaps individual keys
 xorg-xmodmap
+# runs Wayland-native apps inside an X session
 xorg-xwayland
+# sets the root window background and cursor
 xorg-xsetroot
+# shows display info (resolution, depth, extensions)
 xorg-xdpyinfo
+# shows properties and geometry of a specific window
 xorg-xwininfo
+# controls which clients can connect to the X server
 xorg-xhost
+# lists running X client applications
 xorg-xlsclients
+# shows video extension capabilities
 xorg-xvinfo
+# converts BDF fonts to PCF format
 xorg-bdftopcf
+# misc X font utilities
 xorg-font-util
+# 100 DPI bitmap fonts
 xorg-fonts-100dpi
+# 75 DPI bitmap fonts
 xorg-fonts-75dpi
+# font encoding tables required by bitmap fonts
 xorg-fonts-encodings
+# ICE inter-client exchange authentication
 xorg-iceauth
+# generates font scale and dir files
 xorg-mkfontscale
+# manages the X color management database
 xorg-xcmsdb
+# creates X cursor theme files from PNG images
 xorg-xcursorgen
+# shows Direct Rendering Infrastructure info
 xorg-xdriinfo
+# adjusts screen gamma and brightness
 xorg-xgamma
+# compiles XKB keyboard map descriptions
 xorg-xkbcomp
+# listens for and logs XKB extension events
 xorg-xkbevd
+# misc XKB keyboard layout utilities
 xorg-xkbutils
+# lists all X atoms (internal string IDs)
 xorg-xlsatoms
+# prints an X window image to a printer
 xorg-xpr
+# forces a full repaint of the screen
 xorg-xrefresh
+# captures a window or screen to an image file
 xorg-xwd
+# displays an image file captured by xwd
 xorg-xwud
+# nested X server — runs a full X session inside a window
 xorg-server-xephyr
+# nested X server (legacy alternative to Xephyr)
 xorg-server-xnest
+# virtual framebuffer X server (no screen needed, useful for testing)
 xorg-server-xvfb
+# registers/unregisters sessions with utmp/wtmp
 xorg-sessreg
+# lets non-SM-aware apps participate in session management
 xorg-smproxy
+# benchmarks X server rendering performance
 xorg-x11perf
+# fallback VESA video driver (works on almost any GPU)
 xf86-video-vesa
 
-# i3 WM
+# ── i3 Window Manager ─────────────────────────────────────────────────────────
+# tiling window manager
 i3-wm
+# generates status bar blocks for i3bar
 i3blocks
+# screen locker
 i3lock
+# generates status text for i3bar
 i3status
+# Rust-based status bar with rich block support
 i3status-rust
+# display manager — shows the graphical login screen
 sddm
+# graphical popup for sudo/polkit password prompts
 polkit-gnome
+# triggers screen locker on suspend or idle timeout
 xss-lock
 
-# Audio
+# ── Audio ─────────────────────────────────────────────────────────────────────
+# PulseAudio-compatible interface on top of PipeWire
 pipewire-pulse
+# grants audio threads real-time scheduling priority
 rtkit
+# interactive terminal volume mixer
 pulsemixer
+# controls media players (play, pause, next, volume) via MPRIS
 playerctl
+# PulseAudio / PipeWire system tray icon
 pasystray
 
-# Bluetooth
+# ── Bluetooth ─────────────────────────────────────────────────────────────────
+# Bluetooth device manager with system tray icon
 blueman
 
-# Fonts — Nerd Fonts
+# ── Nerd Fonts ────────────────────────────────────────────────────────────────
+# Aurulent Sans Mono
 otf-aurulent-nerd
+# Code New Roman (Courier New-inspired coding font)
 otf-codenewroman-nerd
+# Comic Shanns (Comic Sans-inspired)
 otf-comicshanns-nerd
+# Commit Mono (minimal, neutral coding font)
 otf-commit-mono-nerd
+# Droid Sans Mono (Android's default monospace)
 otf-droid-nerd
+# Fira Mono (Mozilla, clean and readable)
 otf-firamono-nerd
+# Geist Mono (Vercel's coding font)
 otf-geist-mono-nerd
+# Hasklig (Source Code Pro + Haskell ligatures)
 otf-hasklig-nerd
+# Hermit (compact, highly legible)
 otf-hermit-nerd
+# Monaspace (GitHub's font superfamily)
 otf-monaspace-nerd
+# OpenDyslexic (designed to reduce reading errors)
 otf-opendyslexic-nerd
+# Overpass Mono (inspired by US highway signage)
 otf-overpass-nerd
+# 0xProto (designed for code and terminals)
 ttf-0xproto-nerd
+# IBM 3270 (retro IBM mainframe terminal style)
 ttf-3270-nerd
+# Agave (clean minimalist monospace)
 ttf-agave-nerd
+# Anonymous Pro (typewriter-inspired coding font)
 ttf-anonymouspro-nerd
+# Arimo (metric-compatible with Arial)
 ttf-arimo-nerd
+# BigBlueTerminal (retro IBM PC CGA/EGA terminal)
 ttf-bigblueterminal-nerd
+# Bitstream Vera Sans Mono (classic open-source coding font)
 ttf-bitstream-vera-mono-nerd
+# Cascadia Code (Microsoft, with ligatures)
 ttf-cascadia-code-nerd
+# Cascadia Mono (Cascadia Code without ligatures)
 ttf-cascadia-mono-nerd
+# Cousine (metric-compatible with Courier New)
 ttf-cousine-nerd
+# D2Coding (Korean developer font with Latin)
 ttf-d2coding-nerd
+# DaddyTimeMono (bold, humanist monospace)
 ttf-daddytime-mono-nerd
+# DejaVu Sans Mono (wide Unicode coverage)
 ttf-dejavu-nerd
+# Envy Code R (compact, high-contrast coding font)
 ttf-envycoder-nerd
+# Fantasque Sans Mono (quirky, handwritten feel)
 ttf-fantasque-nerd
+# Fira Code (Fira Mono + popular programming ligatures)
 ttf-firacode-nerd
+# Go Mono (Go language's official monospace)
 ttf-go-nerd
+# Gohufont (bitmap-origin, pixel-perfect at small sizes)
 ttf-gohu-nerd
+# Hack (purpose-built for source code)
 ttf-hack-nerd
+# Heavy Data (condensed, high-density display font)
 ttf-heavydata-nerd
+# iA Writer Mono (editorial writing environment font)
 ttf-iawriter-nerd
+# IBM Plex Mono (IBM's open-source corporate font)
 ttf-ibmplex-mono-nerd
+# Inconsolata Go (Inconsolata variant with different metrics)
 ttf-inconsolata-go-nerd
+# Inconsolata LGC (Inconsolata + Cyrillic characters)
 ttf-inconsolata-lgc-nerd
+# Inconsolata (classic clean monospace)
 ttf-inconsolata-nerd
+# Intel One Mono (Intel's open-source coding font)
 ttf-intone-nerd
+# Iosevka (tall, narrow, highly configurable)
 ttf-iosevka-nerd
+# Iosevka Term (optimized for terminals)
 ttf-iosevkaterm-nerd
+# Iosevka Term Slab (slab-serif terminal variant)
 ttf-iosevkatermslab-nerd
+# JetBrains Mono (JetBrains IDEs font, with ligatures)
 ttf-jetbrains-mono-nerd
+# Lekton (inspired by Olivetti Lettera 22 typewriter)
 ttf-lekton-nerd
+# Liberation Mono (metric-compatible with Courier New, Red Hat)
 ttf-liberation-mono-nerd
+# Lilex (Iosevka-based with additional ligatures)
 ttf-lilex-nerd
+# Martian Mono (uniform stroke width for consistency)
 ttf-martian-mono-nerd
+# Meslo LG (customized Apple Menlo)
 ttf-meslo-nerd
+# Monofur (unique rounded, friendly style)
 ttf-monofur-nerd
+# Monoid (narrow, math-symbol ligatures)
 ttf-monoid-nerd
+# Mononoki (minimal, rounded, playful)
 ttf-mononoki-nerd
+# M+ Fonts (Japanese-designed, clean Latin and CJK)
 ttf-mplus-nerd
+# Nerd Fonts symbol/icon glyphs only (no base font)
 ttf-nerd-fonts-symbols
+# Monospace version of Nerd Fonts symbol glyphs
 ttf-nerd-fonts-symbols-mono
+# Noto Mono (Google, universal Unicode coverage)
 ttf-noto-nerd
+# ProFont (bitmap-origin, very small sizes)
 ttf-profont-nerd
+# ProggyClean (pixel-perfect bitmap-style)
 ttf-proggyclean-nerd
+# Recursive (variable font from casual handwriting to monospace)
 ttf-recursive-nerd
+# Roboto Mono (Google's Android-origin monospace)
 ttf-roboto-mono-nerd
+# Share Tech Mono (rounded, open-source terminal font)
 ttf-sharetech-mono-nerd
+# Source Code Pro (Adobe, widely used coding font)
 ttf-sourcecodepro-nerd
+# Space Mono (retro typewriter, designed for Google Fonts)
 ttf-space-mono-nerd
+# Terminus (bitmap-origin, extremely readable at small sizes)
 ttf-terminus-nerd
+# Tinos (metric-compatible with Times New Roman)
 ttf-tinos-nerd
+# Ubuntu Mono (Canonical's monospace)
 ttf-ubuntu-mono-nerd
+# Ubuntu (Canonical's proportional sans-serif)
 ttf-ubuntu-nerd
+# Victor Mono (cursive italics, coding ligatures)
 ttf-victor-mono-nerd
+# Zed Mono (Zed editor's built-in font)
 ttf-zed-mono-nerd
+# Chinese, Japanese and Korean characters (Google Noto)
 noto-fonts-cjk
+# color emoji (Google Noto)
 noto-fonts-emoji
+# extended Noto coverage for less common scripts
 noto-fonts-extra
 
-# Apps
+# ── Applications ──────────────────────────────────────────────────────────────
+# GPU-accelerated terminal emulator
 kitty
+# open-source web browser
 firefox
+# GNOME terminal emulator
 gnome-terminal
+# lightweight desktop notification daemon
 dunst
+# app launcher and window switcher
 rofi
+# highly configurable status bar for i3
 polybar
+# sets desktop wallpaper and views images
 feh
+# screenshot tool (saves file or pipes to clipboard)
 maim
+# saves and restores monitor layouts automatically
 autorandr
+# graphical frontend for xrandr (drag-and-drop monitor setup)
 arandr
+# minimal image viewer
 nsxiv
+# cat with syntax highlighting and line numbers
 bat
+# fast file search (find alternative)
 fd
+# JSON processor for shell scripts and CLI
 jq
+# builds interactive shell scripts with styled prompts
 gum
+# fast multi-protocol download manager (HTTP, BitTorrent, etc.)
 aria2
+# flat colorful icon theme
 papirus-icon-theme
+# sends desktop notifications from scripts
 libnotify
+# TUI file manager with previews
 yazi
+# fast, modern code editor
 zed
+# fuzzy finder for files, processes, git, and more
 television
+# extracts RAR archives
 unrar
+# extracts ZIP archives
 unzip
+# creates ZIP archives
 zip
+# copies text to the X clipboard from the terminal
 xclip
+# read/write support for NTFS drives (Windows disks)
 ntfs-3g
+# creates and checks FAT/FAT32 filesystems
 dosfstools
+# tools for working with MS-DOS/FAT filesystems
 mtools
+# fast Python package and project manager
 uv
+# Intel CPU microcode updates (security and stability fixes)
 intel-ucode
+# firmware blobs for Wi-Fi cards, GPUs and other hardware
 linux-firmware
+# manages UEFI boot entries
 efibootmgr
+# detects other installed OSes so GRUB can add them to the menu
 os-prober
+# bootloader
 grub
+# FFmpeg backend for Qt6 multimedia (video/audio playback)
 qt6-multimedia-ffmpeg
+# SVG rendering support for Qt6 apps
 qt6-svg
+# on-screen virtual keyboard for Qt6 (used by SDDM)
 qt6-virtualkeyboard
 
-# Shell
+# ── Shell ─────────────────────────────────────────────────────────────────────
+# Z shell
 zsh
+# suggests previous commands as you type (fish-like)
 zsh-autosuggestions
+# highlights valid/invalid commands as you type (fish-like)
 zsh-syntax-highlighting

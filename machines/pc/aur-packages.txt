@@ -1,4 +1,4 @@
 # AUR packages — PC only (AMD GPU / desktop)
 
-# GPU fan control (optional, uncomment if needed)
+# controls AMD GPU fan curves (uncomment if fan is too loud or hot)
 # amdgpu-fan

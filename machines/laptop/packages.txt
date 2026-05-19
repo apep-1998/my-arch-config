@@ -1,15 +1,23 @@
-# Laptop-specific packages (Intel GPU — Raptor Lake / Iris Xe)
+# Laptop-specific packages — Intel Iris Xe GPU + power management
 
-# Intel GPU
+# ── Intel GPU (Raptor Lake / Iris Xe) ─────────────────────────────────────────
+# Mesa OpenGL implementation (handles Intel GPU rendering)
 mesa
+# 32-bit Mesa OpenGL (needed for Steam and Wine)
 lib32-mesa
+# Vulkan driver for Intel integrated GPUs
 vulkan-intel
+# hardware video decode and encode via VA-API (Intel Quick Sync)
 intel-media-driver
 
-# Power management
+# ── Power management ──────────────────────────────────────────────────────────
+# advanced power management for Linux laptops (extends battery life)
 tlp
+# TLP radio device wizard — manages Wi-Fi and Bluetooth on suspend/resume
 tlp-rdw
+# analyzes power consumption per device and suggests optimizations
 powertop
 
-# Backlight
+# ── Backlight ─────────────────────────────────────────────────────────────────
+# controls screen brightness via ACPI (works with xorg-xbacklight)
 acpilight

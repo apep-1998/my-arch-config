@@ -1,8 +1,5 @@
-# Work profile packages (everphone)
+# Work profile packages (user: everphone)
 
-# Communication
-slack-desktop
-
-# Dev tools
-uv
+# ── Dev tools ─────────────────────────────────────────────────────────────────
+# Go programming language compiler and toolchain
 go

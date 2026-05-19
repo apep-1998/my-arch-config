@@ -1,14 +1,26 @@
 # AUR packages — installed on every machine
 
+# privacy-focused web browser built on Chromium
 brave-bin
+# Anthropic's AI coding CLI
 claude-code
+# Google's web browser
 google-chrome
+# community-driven zsh framework with plugins and themes
 oh-my-zsh-git
+# clipboard history manager integrated with rofi
 rofi-greenclip
+# password manager (pass) interface for rofi
 rofi-pass
+# fast and highly customizable zsh prompt
 zsh-theme-powerlevel10k
+# space-themed SDDM login screen
 sddm-astronaut-theme
+# Google Gemini AI assistant CLI
 gemini-cli
+# AI coding assistant (runs in the terminal)
 opencode
+# TUI Bluetooth device manager
 bluetui
+# PipeWire audio mixer for the terminal
 wiremix
