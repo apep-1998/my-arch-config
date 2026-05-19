@@ -28,7 +28,8 @@ exec --no-startup-id /usr/bin/dunst
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 
-# exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+# lock screen on suspend/idle — always routes through lock.sh so English is forced
+exec --no-startup-id xss-lock -- bash ~/.config/i3/scripts/lock.sh
 
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
@@ -40,8 +41,6 @@ exec --no-startup-id pasystray
 # clipboard daemon
 exec --no-startup-id greenclip daemon &
 
-# auto lock
-#exec xautolock -time 5 -locker 'bash ~/.config/i3/scripts/lock.sh' &
 
 
 # ============================ init config ============================
