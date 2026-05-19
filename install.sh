@@ -214,15 +214,15 @@ if [ -f "$SCRIPT_DIR/profiles/$PROFILE/setup.sh" ]; then
     bash "$SCRIPT_DIR/profiles/$PROFILE/setup.sh" "$USERNAME"
 fi
 
-# Save profile so sync.sh can read it without asking again
-mkdir -p /etc/my-arch
-cat > /etc/my-arch/profile <<EOF
+# Save profile per-user so multiple users on one machine don't conflict
+mkdir -p "/etc/my-arch/$USERNAME"
+cat > "/etc/my-arch/$USERNAME/profile" <<EOF
 MACHINE=$MACHINE
 PROFILE=$PROFILE
 USERNAME=$USERNAME
 REPO_DIR=$SCRIPT_DIR
 EOF
-log "Saved profile to /etc/my-arch/profile"
+log "Saved profile to /etc/my-arch/$USERNAME/profile"
 
 # ─── 8. Services ──────────────────────────────────────────────────────────────
 step "8/8  System services"

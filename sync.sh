@@ -18,10 +18,15 @@ step() { echo -e "\n${BOLD}${CYAN}══ $* ══${RESET}"; }
 
 [ "$(id -u)" -eq 0 ] || { err "Run as root: sudo bash sync.sh"; exit 1; }
 
-# ─── Load saved profile ───────────────────────────────────────────────────────
-PROFILE_FILE="/etc/my-arch/profile"
+# ─── Load saved profile (per-user, keyed by who called sudo) ─────────────────
+CALLING_USER="${SUDO_USER:-$(logname 2>/dev/null || echo "")}"
+if [ -z "$CALLING_USER" ]; then
+    err "Cannot determine calling user. Run as: sudo bash sync.sh"
+    exit 1
+fi
+PROFILE_FILE="/etc/my-arch/$CALLING_USER/profile"
 if [ ! -f "$PROFILE_FILE" ]; then
-    err "No saved profile at $PROFILE_FILE. Run install.sh first."
+    err "No saved profile at $PROFILE_FILE. Run setup-profile.sh first."
     exit 1
 fi
 source "$PROFILE_FILE"

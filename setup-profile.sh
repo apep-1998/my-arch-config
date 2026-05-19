@@ -42,10 +42,10 @@ read -rp "Username [${DEFAULT_USER}]: " USERNAME
 USERNAME="${USERNAME:-$DEFAULT_USER}"
 
 echo ""
-echo -e "${GREEN}Writing /etc/my-arch/profile (needs sudo)...${RESET}"
+echo -e "${GREEN}Writing /etc/my-arch/$USERNAME/profile (needs sudo)...${RESET}"
 
-sudo mkdir -p /etc/my-arch
-sudo tee /etc/my-arch/profile > /dev/null <<EOF
+sudo mkdir -p "/etc/my-arch/$USERNAME"
+sudo tee "/etc/my-arch/$USERNAME/profile" > /dev/null <<EOF
 MACHINE=$MACHINE
 PROFILE=$PROFILE
 USERNAME=$USERNAME
@@ -59,4 +59,4 @@ echo "  Profile : $PROFILE"
 echo "  User    : $USERNAME"
 echo "  Repo    : $SCRIPT_DIR"
 echo ""
-echo "You can now run: sudo bash $SCRIPT_DIR/sync.sh"
+echo "You can now run: sudo bash $SCRIPT_DIR/sync.sh  (as $USERNAME)"
