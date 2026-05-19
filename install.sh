@@ -153,9 +153,19 @@ if ! command -v yay &>/dev/null; then
     rm -rf /tmp/yay-build
 fi
 
+# Allow the user to call pacman without a password for the duration of AUR installs.
+# yay builds as the user then calls sudo pacman -U internally — without this it
+# hangs waiting for a password with no TTY.
+SUDOERS_FILE="/etc/sudoers.d/my-arch-aur-install"
+echo "$USERNAME ALL=(ALL) NOPASSWD: /usr/bin/pacman" > "$SUDOERS_FILE"
+chmod 440 "$SUDOERS_FILE"
+
 install_aur_file "$SCRIPT_DIR/base/aur-packages.txt" "$USERNAME"
 install_aur_file "$SCRIPT_DIR/machines/$MACHINE/aur-packages.txt" "$USERNAME"
 install_aur_file "$SCRIPT_DIR/profiles/$PROFILE/aur-packages.txt" "$USERNAME"
+
+rm -f "$SUDOERS_FILE"
+log "Removed temporary sudoers rule"
 
 # ─── 5. Dotfiles ──────────────────────────────────────────────────────────────
 step "5/7  Dotfiles"
