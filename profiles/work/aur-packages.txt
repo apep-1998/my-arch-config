@@ -1,4 +1,2 @@
 # AUR packages — Work profile (user: everphone)
 
-# Slack team messaging desktop client
-slack-desktop

@@ -2,5 +2,3 @@
 # One .desktop filename per line (without the .desktop extension).
 # Find the right name with: ls /usr/share/applications/
 
-# Hide work-only apps
-slack
