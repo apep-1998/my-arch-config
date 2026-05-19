@@ -113,7 +113,7 @@ bindcode $main+65 exec "bash ~/.config/i3/scripts/change_keyboard_layout.sh"
 
 
 # -------- open clipboard history mod+c --------
-bindcode $main+54 exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+bindcode $main+54 exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard
 
 # -------- open rofi-pass mod+p --------
 bindcode $main+33 exec "bash ~/.config/i3/scripts/rofi_pass.sh"
