@@ -1,0 +1,9 @@
+[opener]
+imageView = [
+	{ run = "nsxiv %s", orphan = true, for = "unix" }
+]
+
+[open]
+rules = [
+	{ mime = "image/*", use = "imageView" },
+]

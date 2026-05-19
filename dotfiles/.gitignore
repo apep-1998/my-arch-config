@@ -1,0 +1,5 @@
+.config/opencode/node_modules
+**/.DS_Store
+.env
+.config/i3/log/
+.config/i3/scripts/i3-events/.venv/

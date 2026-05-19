@@ -1,0 +1,248 @@
+# set mod key
+# playerctl
+# xorg-setxkbmap
+
+
+set $main Mod4
+set $alt Mod1
+
+font pango:monospace bold 10
+title_align center
+
+
+# ============================ start up ============================
+
+# polybar start
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# set wallpaper
+exec_always --no-startup-id $HOME/.config/i3/scripts/change_wallpaper.sh
+
+# -------- i3 event manager --------
+exec_always --no-startup-id sleep 2 && bash ~/.config/i3/scripts/i3_event_manager.sh &
+
+# notification daemon
+exec --no-startup-id /usr/bin/dunst
+
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+exec --no-startup-id blueman-applet
+
+# exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+# monitor layout — per-host, edit scripts/setup_monitors.sh to add machines
+exec --no-startup-id $HOME/.config/i3/scripts/setup_monitors.sh
+
+exec --no-startup-id pasystray
+
+# auto lock
+#exec xautolock -time 5 -locker 'bash ~/.config/i3/scripts/lock.sh' &
+
+
+# ============================ init config ============================
+# Use Mouse+$main to drag floating windows to their wanted position
+floating_modifier $main
+
+force_display_urgency_hint 500 ms
+
+# gaps
+gaps inner 2
+gaps top 1
+gaps bottom 1
+
+hide_edge_borders both
+default_border pixel 1
+new_window 1pixel
+
+
+# ============================ keybind ============================
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindcode 43 resize shrink width 2 px or 2 ppt
+        bindcode 44 resize grow height 2 px or 2 ppt
+        bindcode 45 resize shrink height 2 px or 2 ppt
+        bindcode 46 resize grow width 2 px or 2 ppt
+
+        # same bindings, but for the arrow keys
+        bindcode 113 resize shrink width 2 px or 2 ppt
+        bindcode 116 resize grow height 2 px or 2 ppt
+        bindcode 111 resize shrink height 2 px or 2 ppt
+        bindcode 114 resize grow width 2 px or 2 ppt
+
+        # back to normal: Enter or Escape or $main+r
+        bindcode 36 mode "default"
+        bindcode 9 mode "default"
+        bindcode $main+27 mode "default"
+}
+
+# -------- screenshot (saves to ~/Pictures/Screenshots and clipboard) --------
+bindsym Print         exec --no-startup-id ~/.config/i3/scripts/screenshot.sh full
+bindsym $main+Insert  exec --no-startup-id ~/.config/i3/scripts/screenshot.sh window
+bindsym Shift+Insert  exec --no-startup-id ~/.config/i3/scripts/screenshot.sh select
+
+
+# -------- Volume controls --------
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# -------- Screen brightness controls (laptop only — no effect on desktop) --------
+bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 20
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 20
+
+# -------- Media player controls --------
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPause exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# -------- change keyboard layout win+space
+bindcode $main+65 exec "bash ~/.config/i3/scripts/change_keyboard_layout.sh"
+
+
+# -------- open rofi-pass mod+p --------
+bindcode $main+33 exec "bash ~/.config/i3/scripts/rofi_pass.sh"
+
+# -------- open power-menu mod+` --------
+bindcode $main+49 exec "bash ~/.config/i3/scripts/power-menu.sh"
+
+# -------- start a mod+return --------
+bindcode $main+36 exec kitty
+
+# -------- kill focused window $main+q --------
+bindcode $main+24 kill
+
+# -------- rofi start $main+d --------
+bindcode $main+40 exec "bash ~/.config/i3/scripts/rofi.sh"
+
+# -------- power menu start $main+g --------
+bindcode $main+42 exec "bash ~/.config/i3/scripts/power-menu.sh"
+
+# -------- change focus mod + j k l ; --------
+bindcode $main+43 focus left
+bindcode $main+44 focus down
+bindcode $main+45 focus up
+bindcode $main+46 focus right
+
+bindcode $main+113 focus left
+bindcode $main+116 focus down
+bindcode $main+111 focus up
+bindcode $main+114 focus right
+
+
+# -------- move focused window mod + shift + jkl; --------
+bindcode $main+Shift+43 move left
+bindcode $main+Shift+44 move down
+bindcode $main+Shift+45 move up
+bindcode $main+Shift+46 move right
+
+bindcode $main+Shift+113 move left
+bindcode $main+Shift+116 move down
+bindcode $main+Shift+111 move up
+bindcode $main+Shift+114 move right
+
+# -------- split in horizontal orientation mod + h --------
+# bindcode $main+43 split h
+
+# -------- split in vertical orientation mod + v --------
+bindcode $main+55 split v
+
+# -------- enter fullscreen mod + f --------
+bindcode $main+41 fullscreen toggle
+
+# -------- change container layout (stacked, tabbed, toggle split) mod + s w e --------
+bindcode $main+39 layout stacking
+bindcode $main+25 layout tabbed
+bindcode $main+26 layout toggle split
+
+# -------- toggle tiling / floating mod + shift + space --------
+bindcode $main+Shift+65 floating toggle
+
+# -------- change focus between tiling / floating windows mod + space --------
+bindcode $alt+65 focus mode_toggle
+
+# -------- focus the parent container mod + a --------
+bindcode $main+38 focus parent
+
+# -------- reload the configuration mod + c --------
+bindcode $main+Shift+54 reload
+
+# -------- restart i3 inplace (preserves your layout/session, can be used to upgrade i3) mod + r --------
+bindcode $main+Shift+27 restart
+
+# -------- exit i3 (logs you out of your X session) mod + shift + e --------
+bindcode $main+Shift+26 exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# -------- resize window mode + r --------
+bindcode $main+27 mode "resize"
+
+# -------- Make the currently focused window a scratchpad --------
+bindsym $main+Shift+minus move scratchpad
+
+# -------- Show the first scratchpad window --------
+bindsym $main+minus scratchpad show
+
+# ============================ workspace config ============================
+# window roles
+# command for get class name
+#  xprop WM_CLASS
+assign [class="firefox" window_type="^(?!dialog)$"] 1:
+assign [class="Google-chrome"] 1:
+assign [class="Code"] 2:
+assign [class="jetbrains-rubymine"] 2:
+assign [class="jetbrains-pycharm"] 2:
+assign [class="jetbrains-goland"] 2:
+assign [class="jetbrains-webstorm"] 2:
+assign [class="Org.gnome.Nautilus"] 4:
+assign [class="Slack"] 5:
+for_window [ class="TelegramDesktop" ] floating enable
+
+for_window [ class="xpad" ] floating enable
+for_window [ class="xpad" ] sticky enable
+
+
+# ----------- switch to workspace
+bindcode $main+10 workspace 1:
+bindcode $main+11 workspace 2:
+bindcode $main+12 workspace 3:
+bindcode $main+13 workspace 4:
+bindcode $main+14 workspace 5:
+bindcode $main+15 workspace 6:
+bindcode $main+16 workspace 7
+bindcode $main+17 workspace 8
+bindcode $main+18 workspace 9
+bindcode $main+19 workspace 10:
+
+# ----------- move focused container to workspace
+bindcode $main+Shift+10 move container to workspace 1:
+bindcode $main+Shift+11 move container to workspace 2:
+bindcode $main+Shift+12 move container to workspace 3:
+bindcode $main+Shift+13 move container to workspace 4:
+bindcode $main+Shift+14 move container to workspace 5:
+bindcode $main+Shift+15 move container to workspace 6:
+bindcode $main+Shift+16 move container to workspace 7
+bindcode $main+Shift+17 move container to workspace 8
+bindcode $main+Shift+18 move container to workspace 9
+bindcode $main+Shift+19 move container to workspace 10:
+
+# Move current workspace between monitors
+bindcode $main+Ctrl+43 move workspace to output up
+bindcode $main+Ctrl+44 move workspace to output down
+bindcode $main+Ctrl+45 move workspace to output left
+bindcode $main+Ctrl+46 move workspace to output right
+
+
+# set some nice colors      border        background        text
+client.focused              #FFFFFF        #FFFFFF         #000000
+client.unfocused            #000000        #000000         #ffffff
+client.focused_inactive     #000000        #000000         #ffffff

@@ -1,0 +1,9 @@
+[project]
+name = "i3-events"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "i3ipc>=2.2.1",
+]

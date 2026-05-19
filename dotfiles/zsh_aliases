@@ -1,0 +1,2 @@
+alias fm='filemanager'
+alias c='xclip -selection clipboard'

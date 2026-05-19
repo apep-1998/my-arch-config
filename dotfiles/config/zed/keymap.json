@@ -1,0 +1,154 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      // "shift shift": "file_finder::Toggle"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      "cmd p t": "terminal_panel::ToggleFocus"
+      // "j k": "vim::NormalBefore"
+    }
+  },
+  {
+    "context": "(FileFinder || FileFinder > Picker > Editor)",
+    "bindings": {
+      "alt-f": "file_finder::Toggle"
+    }
+  },
+  {
+    "context": "((vim_mode == helix_normal || vim_mode == helix_select) && !menu)",
+    "bindings": {
+      "alt-f": "file_finder::Toggle"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      //"shift shift": "file_finder::Toggle"
+      "shift shift": [
+        "task::Spawn",
+        { "task_name": "file_finder", "reveal_target": "center" }
+      ]
+    }
+  },
+  {
+    "bindings": {
+      "z z a": "editor::ToggleFoldAll"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "alt-c": "editor::ToggleFold"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "z z 1": ["editor::FoldAtLevel", 1],
+      "z z 2": ["editor::FoldAtLevel", 2],
+      "z z 3": ["editor::FoldAtLevel", 3],
+      "z z 4": ["editor::FoldAtLevel", 4],
+      "z z 5": ["editor::FoldAtLevel", 5],
+      "z z 6": ["editor::FoldAtLevel", 6],
+      "z z 7": ["editor::FoldAtLevel", 7],
+      "z z 8": ["editor::FoldAtLevel", 8],
+      "z z 9": ["editor::FoldAtLevel", 9]
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "f f f": "editor::Format"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "alt-j": "editor::MoveLineUp"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "alt-k": "editor::MoveLineDown"
+    }
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "alt-l": "pane::ActivateNextItem",
+      "alt-h": "pane::ActivatePreviousItem",
+      "alt-shift-H": "pane::SwapItemLeft",
+      "alt-shift-L": "pane::SwapItemRight"
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-k ctrl-o": "workspace::Open"
+    }
+  },
+  {
+    "context": "((os != macos && Editor) && edit_prediction_conflict)",
+    "bindings": {
+      "alt-a": "editor::AcceptEditPrediction"
+    }
+  },
+  {
+    "context": "(Editor && edit_prediction_conflict)",
+    "bindings": {
+      "alt-a": "editor::AcceptEditPrediction"
+    }
+  },
+  {
+    "context": "AgentPanel",
+    "bindings": {
+      "ctrl-alt-l": null
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-alt-l": null
+    }
+  },
+  {
+    "context": "(Editor && edit_prediction_conflict)",
+    "bindings": {
+      "alt-l": null
+    }
+  },
+  {
+    "context": "(Editor && edit_prediction)",
+    "bindings": {
+      "alt-l": null
+    }
+  },
+  {
+    "context": "((os != macos && Editor) && edit_prediction_conflict)",
+    "bindings": {
+      "alt-l": null
+    }
+  },
+  {
+    "context": "(Editor && edit_prediction)",
+    "bindings": {
+      "alt-a": "editor::AcceptEditPrediction"
+    }
+  },
+  {
+    "context": "(Editor && edit_prediction)",
+    "bindings": {
+      "tab": "editor::Tab"
+    }
+  }
+]
