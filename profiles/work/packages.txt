@@ -3,3 +3,5 @@
 # ── Dev tools ─────────────────────────────────────────────────────────────────
 # Go programming language compiler and toolchain
 go
+# markdown-based knowledge base and note-taking app
+obsidian
