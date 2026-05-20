@@ -142,7 +142,7 @@ slack-desktop
 
 ### Desktop Environment
 - **WM**: i3-wm with i3blocks, i3lock, i3status-rust
-- **Bar**: Polybar
+- **Bar**: Polybar — battery + backlight modules auto-appear on the laptop (detected by `launch.sh` via `/sys/class/power_supply/BAT*` and `/sys/class/backlight/`)
 - **Launcher**: Rofi + rofi-pass (password manager) + rofi-greenclip (clipboard history, `mod+c`)
 - **Notifications**: Dunst
 - **Display manager**: SDDM with sddm-astronaut-theme
