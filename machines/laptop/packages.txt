@@ -17,3 +17,8 @@ tlp
 tlp-rdw
 # analyzes power consumption per device and suggests optimizations
 powertop
+
+# ── Display ───────────────────────────────────────────────────────────────────
+# screen backlight control via /sys (replaces xbacklight on hardware without
+# a RandR Backlight property — true on this Intel iGPU)
+brightnessctl
