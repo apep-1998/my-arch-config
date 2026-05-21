@@ -142,7 +142,7 @@ slack-desktop
 
 ### Desktop Environment
 - **WM**: i3-wm with i3blocks, i3lock, i3status-rust
-- **Bar**: Polybar — battery + backlight modules auto-appear on the laptop (detected by `launch.sh` via `/sys/class/power_supply/BAT*` and `/sys/class/backlight/`). Scrolling on the `BRI` module adjusts brightness via `brightnessctl` (the Intel iGPU here doesn't expose a RandR Backlight property, so `xbacklight` can't drive it).
+- **Bar**: Polybar — battery + backlight modules auto-appear on the laptop (detected by `launch.sh` via `/sys/class/power_supply/BAT*` and `/sys/class/backlight/`). Scrolling on the `BRI` module adjusts brightness via `brightnessctl` (the Intel iGPU here doesn't expose a RandR Backlight property, so `xbacklight` can't drive it). The `i3-events` daemon subscribes to i3's `OUTPUT` events and re-runs `launch.sh` whenever monitors are connected, disconnected, or repositioned, so the bar follows the new layout.
 - **Launcher**: Rofi + rofi-pass (password manager) + rofi-greenclip (clipboard history, `mod+c`)
 - **Notifications**: Dunst
 - **Display manager**: SDDM with sddm-astronaut-theme

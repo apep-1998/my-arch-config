@@ -1,4 +1,5 @@
 import asyncio
+import os
 import subprocess
 
 from i3ipc import Event
@@ -113,6 +114,35 @@ async def on_tick(i3, e):
             set_xkb_layout(layout)
 
 
+_polybar_relaunch_task = None
+
+
+async def _relaunch_polybar_after_settle():
+    """Wait briefly so a burst of OUTPUT events collapses into one relaunch."""
+    try:
+        await asyncio.sleep(0.5)
+    except asyncio.CancelledError:
+        return
+    print("Output configuration settled -> relaunching polybar")
+    subprocess.Popen(
+        [os.path.expanduser("~/.config/polybar/launch.sh")],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+
+def on_output_change(i3, e):
+    """
+    Re-launch polybar whenever the monitor configuration changes
+    (connect, disconnect, reposition) so a bar appears on every new
+    output and stale instances get cleaned up.
+    """
+    global _polybar_relaunch_task
+    if _polybar_relaunch_task and not _polybar_relaunch_task.done():
+        _polybar_relaunch_task.cancel()
+    _polybar_relaunch_task = asyncio.create_task(_relaunch_polybar_after_settle())
+
+
 async def main():
     i3 = await Connection().connect()
 
@@ -120,6 +150,7 @@ async def main():
     i3.on(Event.WINDOW_NEW, on_new_window)
     i3.on(Event.WINDOW_CLOSE, on_close_window)
     i3.on(Event.TICK, on_tick)
+    i3.on(Event.OUTPUT, on_output_change)
 
     await i3.main()
 
