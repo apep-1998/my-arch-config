@@ -339,6 +339,8 @@ autorandr
 arandr
 # minimal image viewer
 nsxiv
+# audio/video toolkit (used by lock.sh to resize the lock-screen image)
+ffmpeg
 # cat with syntax highlighting and line numbers
 bat
 # fast file search (find alternative)
