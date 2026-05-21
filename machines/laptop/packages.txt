@@ -22,3 +22,9 @@ powertop
 # screen backlight control via /sys (replaces xbacklight on hardware without
 # a RandR Backlight property — true on this Intel iGPU)
 brightnessctl
+
+# ── Audio firmware ────────────────────────────────────────────────────────────
+# Sound Open Firmware blobs — required by sof-audio-pci-intel-tgl driver on
+# modern Intel laptops (Tiger Lake / Alder Lake / Raptor Lake cAVS). Without
+# this the audio codec never initialises and no PCM device is exposed.
+sof-firmware

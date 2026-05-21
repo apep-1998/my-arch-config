@@ -15,6 +15,8 @@ github-cli
 nano
 # powerful terminal text editor
 vim
+# terminal pager (used by man, git log, less command)
+less
 # SSH client and server
 openssh
 
@@ -145,8 +147,20 @@ polkit-gnome
 xss-lock
 
 # ── Audio ─────────────────────────────────────────────────────────────────────
+# low-latency audio/video server (replaces PulseAudio and JACK)
+pipewire
 # PulseAudio-compatible interface on top of PipeWire
 pipewire-pulse
+# ALSA-compatible interface on top of PipeWire (routes ALSA-using apps)
+pipewire-alsa
+# JACK-compatible interface on top of PipeWire (routes JACK-using apps)
+pipewire-jack
+# PipeWire session and policy manager — required for any audio to be routed
+wireplumber
+# ALSA command-line tools (aplay, alsamixer, amixer — diagnostics and mixing)
+alsa-utils
+# ALSA Use Case Manager profiles for modern audio devices (Intel SOF, etc.)
+alsa-ucm-conf
 # grants audio threads real-time scheduling priority
 rtkit
 # interactive terminal volume mixer
