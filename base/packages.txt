@@ -165,8 +165,6 @@ rtkit
 pulsemixer
 # controls media players (play, pause, next, volume) via MPRIS
 playerctl
-# PulseAudio / PipeWire system tray icon
-pasystray
 
 # ── Bluetooth ─────────────────────────────────────────────────────────────────
 # Bluetooth protocol stack and bluetoothd daemon

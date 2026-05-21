@@ -159,7 +159,7 @@ slack-desktop
 - **File manager**: Yazi (TUI)
 - **Image viewer**: nsxiv
 - **AI tools**: Claude Code, OpenCode, Gemini CLI
-- **Media**: playerctl, pulsemixer, pasystray, wiremix
+- **Media**: playerctl, pulsemixer, wiremix
 - **Dev**: git, github-cli, docker, go, python, node
 
 ### Fonts

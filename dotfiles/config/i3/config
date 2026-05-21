@@ -32,8 +32,6 @@ exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 # monitor layout — per-host, edit scripts/setup_monitors.sh to add machines
 exec --no-startup-id $HOME/.config/i3/scripts/setup_monitors.sh
 
-exec --no-startup-id pasystray
-
 # clipboard daemon
 exec --no-startup-id greenclip daemon &
 
