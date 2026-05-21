@@ -27,8 +27,6 @@ networkmanager
 dhcpcd
 # modern Wi-Fi daemon (replaces wpa_supplicant)
 iwd
-# NetworkManager system tray icon and editor
-network-manager-applet
 # wireless regulatory database (legal channel/power limits per country)
 wireless-regdb
 
@@ -171,8 +169,10 @@ playerctl
 pasystray
 
 # ── Bluetooth ─────────────────────────────────────────────────────────────────
-# Bluetooth device manager with system tray icon
-blueman
+# Bluetooth protocol stack and bluetoothd daemon
+bluez
+# bluetoothctl and other CLI utilities (scan, pair, connect from the terminal)
+bluez-utils
 
 # ── Nerd Fonts ────────────────────────────────────────────────────────────────
 # Aurulent Sans Mono

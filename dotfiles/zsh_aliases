@@ -1,2 +1,5 @@
 alias fm='filemanager'
 alias c='xclip -selection clipboard'
+alias blue='bluetoothctl'
+alias network='nmcli'
+alias sound='wiremix'

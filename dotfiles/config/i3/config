@@ -24,10 +24,6 @@ exec_always --no-startup-id sleep 2 && bash ~/.config/i3/scripts/i3_event_manage
 # notification daemon
 exec --no-startup-id /usr/bin/dunst
 
-# and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
-exec --no-startup-id blueman-applet
-
 # lock screen on suspend/idle — always routes through lock.sh so English is forced
 exec --no-startup-id xss-lock -- bash ~/.config/i3/scripts/lock.sh
 
