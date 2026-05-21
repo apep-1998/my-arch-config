@@ -94,6 +94,15 @@ After install, `~/dotfiles/` is a **symlink into the repo** — wherever you clo
 
 Editing any config file edits the file in the git repo directly. No separate dotfiles repo, no manual sync. Just edit → commit → push → `sync.sh` on other machines.
 
+### Profile-specific overlays
+
+Configs that differ between `personal` and `work` live under `profiles/<profile>/dotfiles/`:
+
+- `zsh_profile` — sourced at the end of `zshrc`. Per-profile env vars, PATH, aliases.
+- `bin/` — per-profile scripts. Symlinked to `~/.config/profile-bin/` (already on `$PATH`).
+- `config/<app>/` — per-profile `~/.config/<app>` overlays. Used today for AI agents whose configs differ between profiles (e.g. `opencode/`).
+- `claude/` — per-profile Claude Code config. File-level symlinks land under `~/.claude/` (e.g. `claude/settings.json` → `~/.claude/settings.json`), so credentials, sessions, and the marketplace checkout under `plugins/` keep living in the real `~/.claude/` directory untouched.
+
 ---
 
 ## Package File Format

@@ -213,6 +213,36 @@ if [ -d "$PROFILE_DOTFILES" ]; then
         sudo -u "$USERNAME" ln -sfn "$PROFILE_DOTFILES/bin" "$HOME_DIR/.config/profile-bin"
     chmod +x "$PROFILE_DOTFILES/bin/"* 2>/dev/null || true
     log "  -> profile overlay: zsh_profile + profile-bin"
+
+    # Profile-specific ~/.config/<app> overlays (e.g. AI agent configs that
+    # differ between work and personal). Symlink each subdirectory the same
+    # way the shared dotfiles loop does — these take precedence on top of
+    # whatever shared dotfiles/config/<app>/ already linked.
+    if [ -d "$PROFILE_DOTFILES/config" ]; then
+        for cfg_path in "$PROFILE_DOTFILES"/config/*/; do
+            [ -d "$cfg_path" ] || continue
+            cfg=$(basename "$cfg_path")
+            target="$HOME_DIR/.config/$cfg"
+            [ -d "$target" ] && [ ! -L "$target" ] && rm -rf "$target"
+            sudo -u "$USERNAME" ln -sfn "$PROFILE_DOTFILES/config/$cfg" "$target"
+            log "  -> ~/.config/$cfg (profile)"
+        done
+    fi
+
+    # Profile-specific ~/.claude/ overlay. Symlinks at the file level so the
+    # rest of ~/.claude/ (credentials, sessions, history, the marketplace
+    # checkout under plugins/) keeps existing as a real directory.
+    if [ -d "$PROFILE_DOTFILES/claude" ]; then
+        sudo -u "$USERNAME" mkdir -p "$HOME_DIR/.claude"
+        while IFS= read -r -d '' src; do
+            rel=${src#$PROFILE_DOTFILES/claude/}
+            dst="$HOME_DIR/.claude/$rel"
+            sudo -u "$USERNAME" mkdir -p "$(dirname "$dst")"
+            [ -e "$dst" ] && [ ! -L "$dst" ] && rm -rf "$dst"
+            sudo -u "$USERNAME" ln -sfn "$src" "$dst"
+            log "  -> ~/.claude/$rel (profile)"
+        done < <(find "$PROFILE_DOTFILES/claude" -type f -print0)
+    fi
 fi
 
 # Copied files (not symlinked — may have per-machine tweaks)
