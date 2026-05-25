@@ -377,6 +377,8 @@ dosfstools
 mtools
 # fast Python package and project manager
 uv
+# container runtime and CLI (engine + buildx + compose plugin)
+docker
 # Intel CPU microcode updates (security and stability fixes)
 intel-ucode
 # firmware blobs for Wi-Fi cards, GPUs and other hardware

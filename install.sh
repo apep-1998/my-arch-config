@@ -284,6 +284,12 @@ systemctl enable bluetooth 2>/dev/null || warn "bluetooth service not found"
     systemctl enable tlp
 }
 
+# Docker: enable the daemon and let the target user run docker without sudo.
+if systemctl list-unit-files | grep -q '^docker\.service'; then
+    systemctl enable docker.service
+    usermod -aG docker "$USERNAME"
+fi
+
 # ─── Save profile ─────────────────────────────────────────────────────────────
 # Keyed by CALLING_USER (who ran sudo) so the lookup at the top always matches
 mkdir -p "/etc/my-arch/$CALLING_USER"
