@@ -28,3 +28,8 @@ brightnessctl
 # modern Intel laptops (Tiger Lake / Alder Lake / Raptor Lake cAVS). Without
 # this the audio codec never initialises and no PCM device is exposed.
 sof-firmware
+
+# ── Fingerprint reader ────────────────────────────────────────────────────────
+# D-Bus service and CLI (fprintd-enroll, -verify, -list, -delete) on top of
+# libfprint. Drives the Synaptics Prometheus sensor (USB 06cb:00fc).
+fprintd
