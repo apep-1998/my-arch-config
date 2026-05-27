@@ -23,11 +23,11 @@ offset = { x = 0, y = 1 }
 draw_bold_text_with_bright_colors = true
 
 [colors.primary]
-background = "#282a2e"
+background = "#0a0a0a"
 foreground = "#c5c8c6"
 
 [colors.cursor]
-text   = "#1d1f21"
+text   = "#0a0a0a"
 cursor = "#f0c674"
 
 [colors.selection]
@@ -36,7 +36,7 @@ background = "#373b41"
 
 # Tomorrow Night normal colors
 [colors.normal]
-black   = "#1d1f21"
+black   = "#0a0a0a"
 red     = "#cc6666"
 green   = "#b5bd68"
 yellow  = "#f0c674"
