@@ -116,7 +116,7 @@ bindcode $main+33 exec "bash ~/.config/i3/scripts/rofi_pass.sh"
 bindcode $main+49 exec "bash ~/.config/i3/scripts/power-menu.sh"
 
 # -------- start a mod+return --------
-bindcode $main+36 exec kitty
+bindcode $main+36 exec alacritty
 
 # -------- kill focused window $main+q --------
 bindcode $main+24 kill

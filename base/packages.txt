@@ -315,8 +315,8 @@ noto-fonts-emoji
 noto-fonts-extra
 
 # ── Applications ──────────────────────────────────────────────────────────────
-# GPU-accelerated terminal emulator
-kitty
+# fast, minimal GPU-accelerated terminal emulator (Rust, no Python dep)
+alacritty
 # open-source web browser
 firefox
 # GNOME terminal emulator

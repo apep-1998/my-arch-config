@@ -75,7 +75,7 @@ my-arch-config/
         ├── polybar/            ← symlinked to ~/.config/polybar
         ├── rofi/               ← symlinked to ~/.config/rofi
         ├── dunst/              ← symlinked to ~/.config/dunst
-        ├── kitty/              ← symlinked to ~/.config/kitty
+        ├── alacritty/          ← symlinked to ~/.config/alacritty
         ├── yazi/               ← symlinked to ~/.config/yazi
         ├── zed/                ← symlinked to ~/.config/zed
         ├── opencode/           ← symlinked to ~/.config/opencode
@@ -155,7 +155,7 @@ slack-desktop
 - **Launcher**: Rofi + rofi-pass (password manager) + rofi-greenclip (clipboard history, `mod+c`)
 - **Notifications**: Dunst
 - **Display manager**: SDDM with sddm-astronaut-theme
-- **Terminal**: Kitty
+- **Terminal**: Alacritty (GPU-accelerated, Rust, minimal deps; config at `dotfiles/config/alacritty/alacritty.toml`)
 
 ### Shell
 - **Shell**: Zsh with oh-my-zsh
