@@ -24,3 +24,5 @@ opencode
 bluetui
 # PipeWire audio mixer for the terminal
 wiremix
+# markdown-based knowledge base and note-taking app
+obsidian

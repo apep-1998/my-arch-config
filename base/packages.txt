@@ -337,6 +337,8 @@ autorandr
 arandr
 # minimal image viewer
 nsxiv
+# versatile media player (video, audio, streams)
+mpv
 # audio/video toolkit (used by lock.sh to resize the lock-screen image)
 ffmpeg
 # cat with syntax highlighting and line numbers
