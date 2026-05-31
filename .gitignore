@@ -6,3 +6,6 @@
 
 # Editor
 .zed/
+
+# Wallpapers — large binaries, managed locally not via git
+dotfiles/config/i3/wallpapers/
