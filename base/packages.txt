@@ -339,6 +339,8 @@ arandr
 nsxiv
 # versatile media player (video, audio, streams)
 mpv
+# markdown-based knowledge base and note-taking app
+obsidian
 # audio/video toolkit (used by lock.sh to resize the lock-screen image)
 ffmpeg
 # cat with syntax highlighting and line numbers
