@@ -353,6 +353,8 @@ jq
 gum
 # fast multi-protocol download manager (HTTP, BitTorrent, etc.)
 aria2
+# fast incremental file transfer and sync (local and remote)
+rsync
 # flat colorful icon theme
 papirus-icon-theme
 # sends desktop notifications from scripts
